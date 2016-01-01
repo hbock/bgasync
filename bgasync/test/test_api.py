@@ -56,3 +56,11 @@ class ApiTest(unittest.TestCase):
         self.assertEqual(0x0500, resp.ll_version)
         self.assertEqual(0xFE, resp.protocol_version)
         self.assertEqual(0xEF, resp.hw)
+
+    def test_enums(self):
+        # Test generation of various enumerations in multiple classes
+        self.assertEqual(0, api.system_endpoints.endpoint_api.value)
+        self.assertEqual(5, api.system_endpoints.endpoint_uart1.value)
+        self.assertEqual(1, api.attributes_attribute_change_reason.write_command.value)
+        self.assertEqual(1, api.attributes_attribute_status_flag.notify.value)
+        self.assertEqual(0x20, api.sm_bonding_key.csrk.value)
