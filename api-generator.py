@@ -80,6 +80,32 @@ def generate_events_from_class(class_element, output_fp):
 
     return event_list
 
+def generate_enums_from_class(class_element, output_fp):
+    class_name = class_element.getAttribute('name')
+    enums_element_list = class_element.getElementsByTagName('enums')
+
+    for enums_element in enums_element_list:
+        enum_typename = enums_element.getAttribute('name')
+
+        output_fp.write('class {}_{}(Enum):\n'.format(class_name, enum_typename))
+        for enum_value_element in enums_element.getElementsByTagName('enum'):
+            # Some enum value names have a prefix the same as the type itself, e.g.,
+            # <enums name="bonding_key">
+            #     ...
+            #     <enum name="bonding_key_ltk" value="0x01"/>
+            #     <enum name="bonding_key_masterid" value="0x40"/>
+            # </enums>
+            # Strip out the duplicates.
+            enum_value_name = enum_value_element.getAttribute('name')
+            if enum_value_name.startswith(enum_typename + '_'):
+                enum_value_name = enum_value_name[len(enum_typename) + 1:]
+
+            # 'value' could be hex or decimal
+            enum_value = enum_value_element.getAttribute('value')
+            output_fp.write('    {} = {}\n'.format(enum_value_name, enum_value))
+
+        output_fp.write('\n')
+
 def generate_commands_from_class(class_element, output_fp):
     command_list = []
 
@@ -146,6 +172,7 @@ def generate_api_from_document(document, output_fp):
         "# This file is auto-generated. Edit at your own risk!\n"
         "from struct import Struct\n"
         "from collections import namedtuple\n"
+        "from enum import Enum\n"
         "from .apibase import encode_command\n"
         "from .apibase import Decodable\n"
         "\n")
@@ -175,7 +202,8 @@ def generate_api_from_document(document, output_fp):
         # Commands
         command_list = generate_commands_from_class(class_element, output_fp)
 
-        # TODO: enums
+        # Enumerations
+        generate_enums_from_class(class_element, output_fp)
 
         # End classes
         output_fp.write("\n")
