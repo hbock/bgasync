@@ -5,48 +5,48 @@ from .apibase import encode_command
 from .apibase import Decodable
 
 class event_system_boot(Decodable):
-   decoded_type = namedtuple('event_system_boot_type', (
-      'major',
-      'minor',
-      'patch',
-      'build',
-      'll_version',
-      'protocol_version',
-      'hw',
-   ))
-   decode_struct = Struct('<HHHHHBB')
+    decoded_type = namedtuple('event_system_boot_type', (
+        'major',
+        'minor',
+        'patch',
+        'build',
+        'll_version',
+        'protocol_version',
+        'hw',
+    ))
+    decode_struct = Struct('<HHHHHBB')
 
 class event_system_debug(Decodable):
-   decoded_type = namedtuple('event_system_debug_type', (
-      'data',
-   ))
-   decode_struct = Struct('<B')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('event_system_debug_type', (
+        'data',
+    ))
+    decode_struct = Struct('<B')
+    ends_with_uint8array = True
 
 class event_system_endpoint_watermark_rx(Decodable):
-   decoded_type = namedtuple('event_system_endpoint_watermark_rx_type', (
-      'endpoint',
-      'data',
-   ))
-   decode_struct = Struct('<BB')
+    decoded_type = namedtuple('event_system_endpoint_watermark_rx_type', (
+        'endpoint',
+        'data',
+    ))
+    decode_struct = Struct('<BB')
 
 class event_system_endpoint_watermark_tx(Decodable):
-   decoded_type = namedtuple('event_system_endpoint_watermark_tx_type', (
-      'endpoint',
-      'data',
-   ))
-   decode_struct = Struct('<BB')
+    decoded_type = namedtuple('event_system_endpoint_watermark_tx_type', (
+        'endpoint',
+        'data',
+    ))
+    decode_struct = Struct('<BB')
 
 class event_system_script_failure(Decodable):
-   decoded_type = namedtuple('event_system_script_failure_type', (
-      'address',
-      'reason',
-   ))
-   decode_struct = Struct('<HH')
+    decoded_type = namedtuple('event_system_script_failure_type', (
+        'address',
+        'reason',
+    ))
+    decode_struct = Struct('<HH')
 
 class event_system_no_license_key(Decodable):
-   decoded_type = namedtuple('event_system_no_license_key_type', (
-   ))
+    decoded_type = namedtuple('event_system_no_license_key_type', (
+    ))
 
 class command_system_reset(namedtuple('command_system_reset', 'boot_in_dfu')):
    __slots__ = ()
@@ -57,22 +57,24 @@ class command_system_reset(namedtuple('command_system_reset', 'boot_in_dfu')):
 class command_system_hello(namedtuple('command_system_hello', '')):
    __slots__ = ()
    _id = (0, 0, 1)
+   _struct = Struct('<')
    _ends_with_uint8array = False
 
 class response_system_hello(Decodable):
-   decoded_type = namedtuple('response_system_hello_type', (
-   ))
+    decoded_type = namedtuple('response_system_hello_type', (
+    ))
 
 class command_system_address_get(namedtuple('command_system_address_get', '')):
    __slots__ = ()
    _id = (0, 0, 2)
+   _struct = Struct('<')
    _ends_with_uint8array = False
 
 class response_system_address_get(Decodable):
-   decoded_type = namedtuple('response_system_address_get_type', (
-      'address',
-   ))
-   decode_struct = Struct('<6B')
+    decoded_type = namedtuple('response_system_address_get_type', (
+        'address',
+    ))
+    decode_struct = Struct('<6s')
 
 class command_system_reg_write(namedtuple('command_system_reg_write', 'address value')):
    __slots__ = ()
@@ -81,10 +83,10 @@ class command_system_reg_write(namedtuple('command_system_reg_write', 'address v
    _ends_with_uint8array = False
 
 class response_system_reg_write(Decodable):
-   decoded_type = namedtuple('response_system_reg_write_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_system_reg_write_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_system_reg_read(namedtuple('command_system_reg_read', 'address')):
    __slots__ = ()
@@ -93,37 +95,39 @@ class command_system_reg_read(namedtuple('command_system_reg_read', 'address')):
    _ends_with_uint8array = False
 
 class response_system_reg_read(Decodable):
-   decoded_type = namedtuple('response_system_reg_read_type', (
-      'address',
-      'value',
-   ))
-   decode_struct = Struct('<HB')
+    decoded_type = namedtuple('response_system_reg_read_type', (
+        'address',
+        'value',
+    ))
+    decode_struct = Struct('<HB')
 
 class command_system_get_counters(namedtuple('command_system_get_counters', '')):
    __slots__ = ()
    _id = (0, 0, 5)
+   _struct = Struct('<')
    _ends_with_uint8array = False
 
 class response_system_get_counters(Decodable):
-   decoded_type = namedtuple('response_system_get_counters_type', (
-      'txok',
-      'txretry',
-      'rxok',
-      'rxfail',
-      'mbuf',
-   ))
-   decode_struct = Struct('<BBBBB')
+    decoded_type = namedtuple('response_system_get_counters_type', (
+        'txok',
+        'txretry',
+        'rxok',
+        'rxfail',
+        'mbuf',
+    ))
+    decode_struct = Struct('<BBBBB')
 
 class command_system_get_connections(namedtuple('command_system_get_connections', '')):
    __slots__ = ()
    _id = (0, 0, 6)
+   _struct = Struct('<')
    _ends_with_uint8array = False
 
 class response_system_get_connections(Decodable):
-   decoded_type = namedtuple('response_system_get_connections_type', (
-      'maxconn',
-   ))
-   decode_struct = Struct('<B')
+    decoded_type = namedtuple('response_system_get_connections_type', (
+        'maxconn',
+    ))
+    decode_struct = Struct('<B')
 
 class command_system_read_memory(namedtuple('command_system_read_memory', 'address length')):
    __slots__ = ()
@@ -132,29 +136,30 @@ class command_system_read_memory(namedtuple('command_system_read_memory', 'addre
    _ends_with_uint8array = False
 
 class response_system_read_memory(Decodable):
-   decoded_type = namedtuple('response_system_read_memory_type', (
-      'address',
-      'data',
-   ))
-   decode_struct = Struct('<IB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('response_system_read_memory_type', (
+        'address',
+        'data',
+    ))
+    decode_struct = Struct('<IB')
+    ends_with_uint8array = True
 
 class command_system_get_info(namedtuple('command_system_get_info', '')):
    __slots__ = ()
    _id = (0, 0, 8)
+   _struct = Struct('<')
    _ends_with_uint8array = False
 
 class response_system_get_info(Decodable):
-   decoded_type = namedtuple('response_system_get_info_type', (
-      'major',
-      'minor',
-      'patch',
-      'build',
-      'll_version',
-      'protocol_version',
-      'hw',
-   ))
-   decode_struct = Struct('<HHHHHBB')
+    decoded_type = namedtuple('response_system_get_info_type', (
+        'major',
+        'minor',
+        'patch',
+        'build',
+        'll_version',
+        'protocol_version',
+        'hw',
+    ))
+    decode_struct = Struct('<HHHHHBB')
 
 class command_system_endpoint_tx(namedtuple('command_system_endpoint_tx', 'endpoint data')):
    __slots__ = ()
@@ -163,43 +168,44 @@ class command_system_endpoint_tx(namedtuple('command_system_endpoint_tx', 'endpo
    _ends_with_uint8array = True
 
 class response_system_endpoint_tx(Decodable):
-   decoded_type = namedtuple('response_system_endpoint_tx_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_system_endpoint_tx_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_system_whitelist_append(namedtuple('command_system_whitelist_append', 'address address_type')):
    __slots__ = ()
    _id = (0, 0, 10)
-   _struct = Struct('<6BB')
+   _struct = Struct('<6sB')
    _ends_with_uint8array = False
 
 class response_system_whitelist_append(Decodable):
-   decoded_type = namedtuple('response_system_whitelist_append_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_system_whitelist_append_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_system_whitelist_remove(namedtuple('command_system_whitelist_remove', 'address address_type')):
    __slots__ = ()
    _id = (0, 0, 11)
-   _struct = Struct('<6BB')
+   _struct = Struct('<6sB')
    _ends_with_uint8array = False
 
 class response_system_whitelist_remove(Decodable):
-   decoded_type = namedtuple('response_system_whitelist_remove_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_system_whitelist_remove_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_system_whitelist_clear(namedtuple('command_system_whitelist_clear', '')):
    __slots__ = ()
    _id = (0, 0, 12)
+   _struct = Struct('<')
    _ends_with_uint8array = False
 
 class response_system_whitelist_clear(Decodable):
-   decoded_type = namedtuple('response_system_whitelist_clear_type', (
-   ))
+    decoded_type = namedtuple('response_system_whitelist_clear_type', (
+    ))
 
 class command_system_endpoint_rx(namedtuple('command_system_endpoint_rx', 'endpoint size')):
    __slots__ = ()
@@ -208,12 +214,12 @@ class command_system_endpoint_rx(namedtuple('command_system_endpoint_rx', 'endpo
    _ends_with_uint8array = False
 
 class response_system_endpoint_rx(Decodable):
-   decoded_type = namedtuple('response_system_endpoint_rx_type', (
-      'result',
-      'data',
-   ))
-   decode_struct = Struct('<HB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('response_system_endpoint_rx_type', (
+        'result',
+        'data',
+    ))
+    decode_struct = Struct('<HB')
+    ends_with_uint8array = True
 
 class command_system_endpoint_set_watermarks(namedtuple('command_system_endpoint_set_watermarks', 'endpoint rx tx')):
    __slots__ = ()
@@ -222,46 +228,49 @@ class command_system_endpoint_set_watermarks(namedtuple('command_system_endpoint
    _ends_with_uint8array = False
 
 class response_system_endpoint_set_watermarks(Decodable):
-   decoded_type = namedtuple('response_system_endpoint_set_watermarks_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_system_endpoint_set_watermarks_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 
 class event_flash_ps_key(Decodable):
-   decoded_type = namedtuple('event_flash_ps_key_type', (
-      'key',
-      'value',
-   ))
-   decode_struct = Struct('<HB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('event_flash_ps_key_type', (
+        'key',
+        'value',
+    ))
+    decode_struct = Struct('<HB')
+    ends_with_uint8array = True
 
 class command_flash_ps_defrag(namedtuple('command_flash_ps_defrag', '')):
    __slots__ = ()
    _id = (0, 1, 0)
+   _struct = Struct('<')
    _ends_with_uint8array = False
 
 class response_flash_ps_defrag(Decodable):
-   decoded_type = namedtuple('response_flash_ps_defrag_type', (
-   ))
+    decoded_type = namedtuple('response_flash_ps_defrag_type', (
+    ))
 
 class command_flash_ps_dump(namedtuple('command_flash_ps_dump', '')):
    __slots__ = ()
    _id = (0, 1, 1)
+   _struct = Struct('<')
    _ends_with_uint8array = False
 
 class response_flash_ps_dump(Decodable):
-   decoded_type = namedtuple('response_flash_ps_dump_type', (
-   ))
+    decoded_type = namedtuple('response_flash_ps_dump_type', (
+    ))
 
 class command_flash_ps_erase_all(namedtuple('command_flash_ps_erase_all', '')):
    __slots__ = ()
    _id = (0, 1, 2)
+   _struct = Struct('<')
    _ends_with_uint8array = False
 
 class response_flash_ps_erase_all(Decodable):
-   decoded_type = namedtuple('response_flash_ps_erase_all_type', (
-   ))
+    decoded_type = namedtuple('response_flash_ps_erase_all_type', (
+    ))
 
 class command_flash_ps_save(namedtuple('command_flash_ps_save', 'key value')):
    __slots__ = ()
@@ -270,10 +279,10 @@ class command_flash_ps_save(namedtuple('command_flash_ps_save', 'key value')):
    _ends_with_uint8array = True
 
 class response_flash_ps_save(Decodable):
-   decoded_type = namedtuple('response_flash_ps_save_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_flash_ps_save_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_flash_ps_load(namedtuple('command_flash_ps_load', 'key')):
    __slots__ = ()
@@ -282,12 +291,12 @@ class command_flash_ps_load(namedtuple('command_flash_ps_load', 'key')):
    _ends_with_uint8array = False
 
 class response_flash_ps_load(Decodable):
-   decoded_type = namedtuple('response_flash_ps_load_type', (
-      'result',
-      'value',
-   ))
-   decode_struct = Struct('<HB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('response_flash_ps_load_type', (
+        'result',
+        'value',
+    ))
+    decode_struct = Struct('<HB')
+    ends_with_uint8array = True
 
 class command_flash_ps_erase(namedtuple('command_flash_ps_erase', 'key')):
    __slots__ = ()
@@ -296,8 +305,8 @@ class command_flash_ps_erase(namedtuple('command_flash_ps_erase', 'key')):
    _ends_with_uint8array = False
 
 class response_flash_ps_erase(Decodable):
-   decoded_type = namedtuple('response_flash_ps_erase_type', (
-   ))
+    decoded_type = namedtuple('response_flash_ps_erase_type', (
+    ))
 
 class command_flash_erase_page(namedtuple('command_flash_erase_page', 'page')):
    __slots__ = ()
@@ -306,10 +315,10 @@ class command_flash_erase_page(namedtuple('command_flash_erase_page', 'page')):
    _ends_with_uint8array = False
 
 class response_flash_erase_page(Decodable):
-   decoded_type = namedtuple('response_flash_erase_page_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_flash_erase_page_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_flash_write_words(namedtuple('command_flash_write_words', 'address words')):
    __slots__ = ()
@@ -318,36 +327,36 @@ class command_flash_write_words(namedtuple('command_flash_write_words', 'address
    _ends_with_uint8array = True
 
 class response_flash_write_words(Decodable):
-   decoded_type = namedtuple('response_flash_write_words_type', (
-   ))
+    decoded_type = namedtuple('response_flash_write_words_type', (
+    ))
 
 
 class event_attributes_value(Decodable):
-   decoded_type = namedtuple('event_attributes_value_type', (
-      'connection',
-      'reason',
-      'handle',
-      'offset',
-      'value',
-   ))
-   decode_struct = Struct('<BBHHB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('event_attributes_value_type', (
+        'connection',
+        'reason',
+        'handle',
+        'offset',
+        'value',
+    ))
+    decode_struct = Struct('<BBHHB')
+    ends_with_uint8array = True
 
 class event_attributes_user_read_request(Decodable):
-   decoded_type = namedtuple('event_attributes_user_read_request_type', (
-      'connection',
-      'handle',
-      'offset',
-      'maxsize',
-   ))
-   decode_struct = Struct('<BHHB')
+    decoded_type = namedtuple('event_attributes_user_read_request_type', (
+        'connection',
+        'handle',
+        'offset',
+        'maxsize',
+    ))
+    decode_struct = Struct('<BHHB')
 
 class event_attributes_status(Decodable):
-   decoded_type = namedtuple('event_attributes_status_type', (
-      'handle',
-      'flags',
-   ))
-   decode_struct = Struct('<HB')
+    decoded_type = namedtuple('event_attributes_status_type', (
+        'handle',
+        'flags',
+    ))
+    decode_struct = Struct('<HB')
 
 class command_attributes_write(namedtuple('command_attributes_write', 'handle offset value')):
    __slots__ = ()
@@ -356,10 +365,10 @@ class command_attributes_write(namedtuple('command_attributes_write', 'handle of
    _ends_with_uint8array = True
 
 class response_attributes_write(Decodable):
-   decoded_type = namedtuple('response_attributes_write_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_attributes_write_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_attributes_read(namedtuple('command_attributes_read', 'handle offset')):
    __slots__ = ()
@@ -368,14 +377,14 @@ class command_attributes_read(namedtuple('command_attributes_read', 'handle offs
    _ends_with_uint8array = False
 
 class response_attributes_read(Decodable):
-   decoded_type = namedtuple('response_attributes_read_type', (
-      'handle',
-      'offset',
-      'result',
-      'value',
-   ))
-   decode_struct = Struct('<HHHB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('response_attributes_read_type', (
+        'handle',
+        'offset',
+        'result',
+        'value',
+    ))
+    decode_struct = Struct('<HHHB')
+    ends_with_uint8array = True
 
 class command_attributes_read_type(namedtuple('command_attributes_read_type', 'handle')):
    __slots__ = ()
@@ -384,13 +393,13 @@ class command_attributes_read_type(namedtuple('command_attributes_read_type', 'h
    _ends_with_uint8array = False
 
 class response_attributes_read_type(Decodable):
-   decoded_type = namedtuple('response_attributes_read_type_type', (
-      'handle',
-      'result',
-      'value',
-   ))
-   decode_struct = Struct('<HHB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('response_attributes_read_type_type', (
+        'handle',
+        'result',
+        'value',
+    ))
+    decode_struct = Struct('<HHB')
+    ends_with_uint8array = True
 
 class command_attributes_user_read_response(namedtuple('command_attributes_user_read_response', 'connection att_error value')):
    __slots__ = ()
@@ -399,8 +408,8 @@ class command_attributes_user_read_response(namedtuple('command_attributes_user_
    _ends_with_uint8array = True
 
 class response_attributes_user_read_response(Decodable):
-   decoded_type = namedtuple('response_attributes_user_read_response_type', (
-   ))
+    decoded_type = namedtuple('response_attributes_user_read_response_type', (
+    ))
 
 class command_attributes_user_write_response(namedtuple('command_attributes_user_write_response', 'connection att_error')):
    __slots__ = ()
@@ -409,54 +418,54 @@ class command_attributes_user_write_response(namedtuple('command_attributes_user
    _ends_with_uint8array = False
 
 class response_attributes_user_write_response(Decodable):
-   decoded_type = namedtuple('response_attributes_user_write_response_type', (
-   ))
+    decoded_type = namedtuple('response_attributes_user_write_response_type', (
+    ))
 
 
 class event_connection_status(Decodable):
-   decoded_type = namedtuple('event_connection_status_type', (
-      'connection',
-      'flags',
-      'address',
-      'address_type',
-      'conn_interval',
-      'timeout',
-      'latency',
-      'bonding',
-   ))
-   decode_struct = Struct('<BB6BBHHHB')
+    decoded_type = namedtuple('event_connection_status_type', (
+        'connection',
+        'flags',
+        'address',
+        'address_type',
+        'conn_interval',
+        'timeout',
+        'latency',
+        'bonding',
+    ))
+    decode_struct = Struct('<BB6sBHHHB')
 
 class event_connection_version_ind(Decodable):
-   decoded_type = namedtuple('event_connection_version_ind_type', (
-      'connection',
-      'vers_nr',
-      'comp_id',
-      'sub_vers_nr',
-   ))
-   decode_struct = Struct('<BBHH')
+    decoded_type = namedtuple('event_connection_version_ind_type', (
+        'connection',
+        'vers_nr',
+        'comp_id',
+        'sub_vers_nr',
+    ))
+    decode_struct = Struct('<BBHH')
 
 class event_connection_feature_ind(Decodable):
-   decoded_type = namedtuple('event_connection_feature_ind_type', (
-      'connection',
-      'features',
-   ))
-   decode_struct = Struct('<BB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('event_connection_feature_ind_type', (
+        'connection',
+        'features',
+    ))
+    decode_struct = Struct('<BB')
+    ends_with_uint8array = True
 
 class event_connection_raw_rx(Decodable):
-   decoded_type = namedtuple('event_connection_raw_rx_type', (
-      'connection',
-      'data',
-   ))
-   decode_struct = Struct('<BB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('event_connection_raw_rx_type', (
+        'connection',
+        'data',
+    ))
+    decode_struct = Struct('<BB')
+    ends_with_uint8array = True
 
 class event_connection_disconnected(Decodable):
-   decoded_type = namedtuple('event_connection_disconnected_type', (
-      'connection',
-      'reason',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('event_connection_disconnected_type', (
+        'connection',
+        'reason',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_connection_disconnect(namedtuple('command_connection_disconnect', 'connection')):
    __slots__ = ()
@@ -465,11 +474,11 @@ class command_connection_disconnect(namedtuple('command_connection_disconnect', 
    _ends_with_uint8array = False
 
 class response_connection_disconnect(Decodable):
-   decoded_type = namedtuple('response_connection_disconnect_type', (
-      'connection',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_connection_disconnect_type', (
+        'connection',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_connection_get_rssi(namedtuple('command_connection_get_rssi', 'connection')):
    __slots__ = ()
@@ -478,11 +487,11 @@ class command_connection_get_rssi(namedtuple('command_connection_get_rssi', 'con
    _ends_with_uint8array = False
 
 class response_connection_get_rssi(Decodable):
-   decoded_type = namedtuple('response_connection_get_rssi_type', (
-      'connection',
-      'rssi',
-   ))
-   decode_struct = Struct('<Bb')
+    decoded_type = namedtuple('response_connection_get_rssi_type', (
+        'connection',
+        'rssi',
+    ))
+    decode_struct = Struct('<Bb')
 
 class command_connection_update(namedtuple('command_connection_update', 'connection interval_min interval_max latency timeout')):
    __slots__ = ()
@@ -491,11 +500,11 @@ class command_connection_update(namedtuple('command_connection_update', 'connect
    _ends_with_uint8array = False
 
 class response_connection_update(Decodable):
-   decoded_type = namedtuple('response_connection_update_type', (
-      'connection',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_connection_update_type', (
+        'connection',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_connection_version_update(namedtuple('command_connection_version_update', 'connection')):
    __slots__ = ()
@@ -504,11 +513,11 @@ class command_connection_version_update(namedtuple('command_connection_version_u
    _ends_with_uint8array = False
 
 class response_connection_version_update(Decodable):
-   decoded_type = namedtuple('response_connection_version_update_type', (
-      'connection',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_connection_version_update_type', (
+        'connection',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_connection_channel_map_get(namedtuple('command_connection_channel_map_get', 'connection')):
    __slots__ = ()
@@ -517,12 +526,12 @@ class command_connection_channel_map_get(namedtuple('command_connection_channel_
    _ends_with_uint8array = False
 
 class response_connection_channel_map_get(Decodable):
-   decoded_type = namedtuple('response_connection_channel_map_get_type', (
-      'connection',
-      'map',
-   ))
-   decode_struct = Struct('<BB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('response_connection_channel_map_get_type', (
+        'connection',
+        'map',
+    ))
+    decode_struct = Struct('<BB')
+    ends_with_uint8array = True
 
 class command_connection_channel_map_set(namedtuple('command_connection_channel_map_set', 'connection map')):
    __slots__ = ()
@@ -531,11 +540,11 @@ class command_connection_channel_map_set(namedtuple('command_connection_channel_
    _ends_with_uint8array = True
 
 class response_connection_channel_map_set(Decodable):
-   decoded_type = namedtuple('response_connection_channel_map_set_type', (
-      'connection',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_connection_channel_map_set_type', (
+        'connection',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_connection_features_get(namedtuple('command_connection_features_get', 'connection')):
    __slots__ = ()
@@ -544,11 +553,11 @@ class command_connection_features_get(namedtuple('command_connection_features_ge
    _ends_with_uint8array = False
 
 class response_connection_features_get(Decodable):
-   decoded_type = namedtuple('response_connection_features_get_type', (
-      'connection',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_connection_features_get_type', (
+        'connection',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_connection_get_status(namedtuple('command_connection_get_status', 'connection')):
    __slots__ = ()
@@ -557,10 +566,10 @@ class command_connection_get_status(namedtuple('command_connection_get_status', 
    _ends_with_uint8array = False
 
 class response_connection_get_status(Decodable):
-   decoded_type = namedtuple('response_connection_get_status_type', (
-      'connection',
-   ))
-   decode_struct = Struct('<B')
+    decoded_type = namedtuple('response_connection_get_status_type', (
+        'connection',
+    ))
+    decode_struct = Struct('<B')
 
 class command_connection_raw_tx(namedtuple('command_connection_raw_tx', 'connection data')):
    __slots__ = ()
@@ -569,74 +578,74 @@ class command_connection_raw_tx(namedtuple('command_connection_raw_tx', 'connect
    _ends_with_uint8array = True
 
 class response_connection_raw_tx(Decodable):
-   decoded_type = namedtuple('response_connection_raw_tx_type', (
-      'connection',
-   ))
-   decode_struct = Struct('<B')
+    decoded_type = namedtuple('response_connection_raw_tx_type', (
+        'connection',
+    ))
+    decode_struct = Struct('<B')
 
 
 class event_attclient_indicated(Decodable):
-   decoded_type = namedtuple('event_attclient_indicated_type', (
-      'connection',
-      'attrhandle',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('event_attclient_indicated_type', (
+        'connection',
+        'attrhandle',
+    ))
+    decode_struct = Struct('<BH')
 
 class event_attclient_procedure_completed(Decodable):
-   decoded_type = namedtuple('event_attclient_procedure_completed_type', (
-      'connection',
-      'result',
-      'chrhandle',
-   ))
-   decode_struct = Struct('<BHH')
+    decoded_type = namedtuple('event_attclient_procedure_completed_type', (
+        'connection',
+        'result',
+        'chrhandle',
+    ))
+    decode_struct = Struct('<BHH')
 
 class event_attclient_group_found(Decodable):
-   decoded_type = namedtuple('event_attclient_group_found_type', (
-      'connection',
-      'start',
-      'end',
-      'uuid',
-   ))
-   decode_struct = Struct('<BHHB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('event_attclient_group_found_type', (
+        'connection',
+        'start',
+        'end',
+        'uuid',
+    ))
+    decode_struct = Struct('<BHHB')
+    ends_with_uint8array = True
 
 class event_attclient_attribute_found(Decodable):
-   decoded_type = namedtuple('event_attclient_attribute_found_type', (
-      'connection',
-      'chrdecl',
-      'value',
-      'properties',
-      'uuid',
-   ))
-   decode_struct = Struct('<BHHBB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('event_attclient_attribute_found_type', (
+        'connection',
+        'chrdecl',
+        'value',
+        'properties',
+        'uuid',
+    ))
+    decode_struct = Struct('<BHHBB')
+    ends_with_uint8array = True
 
 class event_attclient_find_information_found(Decodable):
-   decoded_type = namedtuple('event_attclient_find_information_found_type', (
-      'connection',
-      'chrhandle',
-      'uuid',
-   ))
-   decode_struct = Struct('<BHB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('event_attclient_find_information_found_type', (
+        'connection',
+        'chrhandle',
+        'uuid',
+    ))
+    decode_struct = Struct('<BHB')
+    ends_with_uint8array = True
 
 class event_attclient_attribute_value(Decodable):
-   decoded_type = namedtuple('event_attclient_attribute_value_type', (
-      'connection',
-      'atthandle',
-      'type',
-      'value',
-   ))
-   decode_struct = Struct('<BHBB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('event_attclient_attribute_value_type', (
+        'connection',
+        'atthandle',
+        'type',
+        'value',
+    ))
+    decode_struct = Struct('<BHBB')
+    ends_with_uint8array = True
 
 class event_attclient_read_multiple_response(Decodable):
-   decoded_type = namedtuple('event_attclient_read_multiple_response_type', (
-      'connection',
-      'handles',
-   ))
-   decode_struct = Struct('<BB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('event_attclient_read_multiple_response_type', (
+        'connection',
+        'handles',
+    ))
+    decode_struct = Struct('<BB')
+    ends_with_uint8array = True
 
 class command_attclient_find_by_type_value(namedtuple('command_attclient_find_by_type_value', 'connection start end uuid value')):
    __slots__ = ()
@@ -645,11 +654,11 @@ class command_attclient_find_by_type_value(namedtuple('command_attclient_find_by
    _ends_with_uint8array = True
 
 class response_attclient_find_by_type_value(Decodable):
-   decoded_type = namedtuple('response_attclient_find_by_type_value_type', (
-      'connection',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_attclient_find_by_type_value_type', (
+        'connection',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_attclient_read_by_group_type(namedtuple('command_attclient_read_by_group_type', 'connection start end uuid')):
    __slots__ = ()
@@ -658,11 +667,11 @@ class command_attclient_read_by_group_type(namedtuple('command_attclient_read_by
    _ends_with_uint8array = True
 
 class response_attclient_read_by_group_type(Decodable):
-   decoded_type = namedtuple('response_attclient_read_by_group_type_type', (
-      'connection',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_attclient_read_by_group_type_type', (
+        'connection',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_attclient_read_by_type(namedtuple('command_attclient_read_by_type', 'connection start end uuid')):
    __slots__ = ()
@@ -671,11 +680,11 @@ class command_attclient_read_by_type(namedtuple('command_attclient_read_by_type'
    _ends_with_uint8array = True
 
 class response_attclient_read_by_type(Decodable):
-   decoded_type = namedtuple('response_attclient_read_by_type_type', (
-      'connection',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_attclient_read_by_type_type', (
+        'connection',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_attclient_find_information(namedtuple('command_attclient_find_information', 'connection start end')):
    __slots__ = ()
@@ -684,11 +693,11 @@ class command_attclient_find_information(namedtuple('command_attclient_find_info
    _ends_with_uint8array = False
 
 class response_attclient_find_information(Decodable):
-   decoded_type = namedtuple('response_attclient_find_information_type', (
-      'connection',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_attclient_find_information_type', (
+        'connection',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_attclient_read_by_handle(namedtuple('command_attclient_read_by_handle', 'connection chrhandle')):
    __slots__ = ()
@@ -697,11 +706,11 @@ class command_attclient_read_by_handle(namedtuple('command_attclient_read_by_han
    _ends_with_uint8array = False
 
 class response_attclient_read_by_handle(Decodable):
-   decoded_type = namedtuple('response_attclient_read_by_handle_type', (
-      'connection',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_attclient_read_by_handle_type', (
+        'connection',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_attclient_attribute_write(namedtuple('command_attclient_attribute_write', 'connection atthandle data')):
    __slots__ = ()
@@ -710,11 +719,11 @@ class command_attclient_attribute_write(namedtuple('command_attclient_attribute_
    _ends_with_uint8array = True
 
 class response_attclient_attribute_write(Decodable):
-   decoded_type = namedtuple('response_attclient_attribute_write_type', (
-      'connection',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_attclient_attribute_write_type', (
+        'connection',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_attclient_write_command(namedtuple('command_attclient_write_command', 'connection atthandle data')):
    __slots__ = ()
@@ -723,11 +732,11 @@ class command_attclient_write_command(namedtuple('command_attclient_write_comman
    _ends_with_uint8array = True
 
 class response_attclient_write_command(Decodable):
-   decoded_type = namedtuple('response_attclient_write_command_type', (
-      'connection',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_attclient_write_command_type', (
+        'connection',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_attclient_indicate_confirm(namedtuple('command_attclient_indicate_confirm', 'connection')):
    __slots__ = ()
@@ -736,10 +745,10 @@ class command_attclient_indicate_confirm(namedtuple('command_attclient_indicate_
    _ends_with_uint8array = False
 
 class response_attclient_indicate_confirm(Decodable):
-   decoded_type = namedtuple('response_attclient_indicate_confirm_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_attclient_indicate_confirm_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_attclient_read_long(namedtuple('command_attclient_read_long', 'connection chrhandle')):
    __slots__ = ()
@@ -748,11 +757,11 @@ class command_attclient_read_long(namedtuple('command_attclient_read_long', 'con
    _ends_with_uint8array = False
 
 class response_attclient_read_long(Decodable):
-   decoded_type = namedtuple('response_attclient_read_long_type', (
-      'connection',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_attclient_read_long_type', (
+        'connection',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_attclient_prepare_write(namedtuple('command_attclient_prepare_write', 'connection atthandle offset data')):
    __slots__ = ()
@@ -761,11 +770,11 @@ class command_attclient_prepare_write(namedtuple('command_attclient_prepare_writ
    _ends_with_uint8array = True
 
 class response_attclient_prepare_write(Decodable):
-   decoded_type = namedtuple('response_attclient_prepare_write_type', (
-      'connection',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_attclient_prepare_write_type', (
+        'connection',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_attclient_execute_write(namedtuple('command_attclient_execute_write', 'connection commit')):
    __slots__ = ()
@@ -774,11 +783,11 @@ class command_attclient_execute_write(namedtuple('command_attclient_execute_writ
    _ends_with_uint8array = False
 
 class response_attclient_execute_write(Decodable):
-   decoded_type = namedtuple('response_attclient_execute_write_type', (
-      'connection',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_attclient_execute_write_type', (
+        'connection',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_attclient_read_multiple(namedtuple('command_attclient_read_multiple', 'connection handles')):
    __slots__ = ()
@@ -787,50 +796,50 @@ class command_attclient_read_multiple(namedtuple('command_attclient_read_multipl
    _ends_with_uint8array = True
 
 class response_attclient_read_multiple(Decodable):
-   decoded_type = namedtuple('response_attclient_read_multiple_type', (
-      'connection',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_attclient_read_multiple_type', (
+        'connection',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 
 class event_sm_smp_data(Decodable):
-   decoded_type = namedtuple('event_sm_smp_data_type', (
-      'handle',
-      'packet',
-      'data',
-   ))
-   decode_struct = Struct('<BBB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('event_sm_smp_data_type', (
+        'handle',
+        'packet',
+        'data',
+    ))
+    decode_struct = Struct('<BBB')
+    ends_with_uint8array = True
 
 class event_sm_bonding_fail(Decodable):
-   decoded_type = namedtuple('event_sm_bonding_fail_type', (
-      'handle',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('event_sm_bonding_fail_type', (
+        'handle',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class event_sm_passkey_display(Decodable):
-   decoded_type = namedtuple('event_sm_passkey_display_type', (
-      'handle',
-      'passkey',
-   ))
-   decode_struct = Struct('<BI')
+    decoded_type = namedtuple('event_sm_passkey_display_type', (
+        'handle',
+        'passkey',
+    ))
+    decode_struct = Struct('<BI')
 
 class event_sm_passkey_request(Decodable):
-   decoded_type = namedtuple('event_sm_passkey_request_type', (
-      'handle',
-   ))
-   decode_struct = Struct('<B')
+    decoded_type = namedtuple('event_sm_passkey_request_type', (
+        'handle',
+    ))
+    decode_struct = Struct('<B')
 
 class event_sm_bond_status(Decodable):
-   decoded_type = namedtuple('event_sm_bond_status_type', (
-      'bond',
-      'keysize',
-      'mitm',
-      'keys',
-   ))
-   decode_struct = Struct('<BBBB')
+    decoded_type = namedtuple('event_sm_bond_status_type', (
+        'bond',
+        'keysize',
+        'mitm',
+        'keys',
+    ))
+    decode_struct = Struct('<BBBB')
 
 class command_sm_encrypt_start(namedtuple('command_sm_encrypt_start', 'handle bonding')):
    __slots__ = ()
@@ -839,11 +848,11 @@ class command_sm_encrypt_start(namedtuple('command_sm_encrypt_start', 'handle bo
    _ends_with_uint8array = False
 
 class response_sm_encrypt_start(Decodable):
-   decoded_type = namedtuple('response_sm_encrypt_start_type', (
-      'handle',
-      'result',
-   ))
-   decode_struct = Struct('<BH')
+    decoded_type = namedtuple('response_sm_encrypt_start_type', (
+        'handle',
+        'result',
+    ))
+    decode_struct = Struct('<BH')
 
 class command_sm_set_bondable_mode(namedtuple('command_sm_set_bondable_mode', 'bondable')):
    __slots__ = ()
@@ -852,8 +861,8 @@ class command_sm_set_bondable_mode(namedtuple('command_sm_set_bondable_mode', 'b
    _ends_with_uint8array = False
 
 class response_sm_set_bondable_mode(Decodable):
-   decoded_type = namedtuple('response_sm_set_bondable_mode_type', (
-   ))
+    decoded_type = namedtuple('response_sm_set_bondable_mode_type', (
+    ))
 
 class command_sm_delete_bonding(namedtuple('command_sm_delete_bonding', 'handle')):
    __slots__ = ()
@@ -862,10 +871,10 @@ class command_sm_delete_bonding(namedtuple('command_sm_delete_bonding', 'handle'
    _ends_with_uint8array = False
 
 class response_sm_delete_bonding(Decodable):
-   decoded_type = namedtuple('response_sm_delete_bonding_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_sm_delete_bonding_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_sm_set_parameters(namedtuple('command_sm_set_parameters', 'mitm min_key_size io_capabilities')):
    __slots__ = ()
@@ -874,8 +883,8 @@ class command_sm_set_parameters(namedtuple('command_sm_set_parameters', 'mitm mi
    _ends_with_uint8array = False
 
 class response_sm_set_parameters(Decodable):
-   decoded_type = namedtuple('response_sm_set_parameters_type', (
-   ))
+    decoded_type = namedtuple('response_sm_set_parameters_type', (
+    ))
 
 class command_sm_passkey_entry(namedtuple('command_sm_passkey_entry', 'handle passkey')):
    __slots__ = ()
@@ -884,21 +893,22 @@ class command_sm_passkey_entry(namedtuple('command_sm_passkey_entry', 'handle pa
    _ends_with_uint8array = False
 
 class response_sm_passkey_entry(Decodable):
-   decoded_type = namedtuple('response_sm_passkey_entry_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_sm_passkey_entry_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_sm_get_bonds(namedtuple('command_sm_get_bonds', '')):
    __slots__ = ()
    _id = (0, 5, 5)
+   _struct = Struct('<')
    _ends_with_uint8array = False
 
 class response_sm_get_bonds(Decodable):
-   decoded_type = namedtuple('response_sm_get_bonds_type', (
-      'bonds',
-   ))
-   decode_struct = Struct('<B')
+    decoded_type = namedtuple('response_sm_get_bonds_type', (
+        'bonds',
+    ))
+    decode_struct = Struct('<B')
 
 class command_sm_set_oob_data(namedtuple('command_sm_set_oob_data', 'oob')):
    __slots__ = ()
@@ -907,28 +917,28 @@ class command_sm_set_oob_data(namedtuple('command_sm_set_oob_data', 'oob')):
    _ends_with_uint8array = True
 
 class response_sm_set_oob_data(Decodable):
-   decoded_type = namedtuple('response_sm_set_oob_data_type', (
-   ))
+    decoded_type = namedtuple('response_sm_set_oob_data_type', (
+    ))
 
 
 class event_gap_scan_response(Decodable):
-   decoded_type = namedtuple('event_gap_scan_response_type', (
-      'rssi',
-      'packet_type',
-      'sender',
-      'address_type',
-      'bond',
-      'data',
-   ))
-   decode_struct = Struct('<bB6BBBB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('event_gap_scan_response_type', (
+        'rssi',
+        'packet_type',
+        'sender',
+        'address_type',
+        'bond',
+        'data',
+    ))
+    decode_struct = Struct('<bB6sBBB')
+    ends_with_uint8array = True
 
 class event_gap_mode_changed(Decodable):
-   decoded_type = namedtuple('event_gap_mode_changed_type', (
-      'discover',
-      'connect',
-   ))
-   decode_struct = Struct('<BB')
+    decoded_type = namedtuple('event_gap_mode_changed_type', (
+        'discover',
+        'connect',
+    ))
+    decode_struct = Struct('<BB')
 
 class command_gap_set_privacy_flags(namedtuple('command_gap_set_privacy_flags', 'peripheral_privacy central_privacy')):
    __slots__ = ()
@@ -937,8 +947,8 @@ class command_gap_set_privacy_flags(namedtuple('command_gap_set_privacy_flags', 
    _ends_with_uint8array = False
 
 class response_gap_set_privacy_flags(Decodable):
-   decoded_type = namedtuple('response_gap_set_privacy_flags_type', (
-   ))
+    decoded_type = namedtuple('response_gap_set_privacy_flags_type', (
+    ))
 
 class command_gap_set_mode(namedtuple('command_gap_set_mode', 'discover connect')):
    __slots__ = ()
@@ -947,10 +957,10 @@ class command_gap_set_mode(namedtuple('command_gap_set_mode', 'discover connect'
    _ends_with_uint8array = False
 
 class response_gap_set_mode(Decodable):
-   decoded_type = namedtuple('response_gap_set_mode_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_gap_set_mode_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_gap_discover(namedtuple('command_gap_discover', 'mode')):
    __slots__ = ()
@@ -959,34 +969,35 @@ class command_gap_discover(namedtuple('command_gap_discover', 'mode')):
    _ends_with_uint8array = False
 
 class response_gap_discover(Decodable):
-   decoded_type = namedtuple('response_gap_discover_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_gap_discover_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_gap_connect_direct(namedtuple('command_gap_connect_direct', 'address addr_type conn_interval_min conn_interval_max timeout latency')):
    __slots__ = ()
    _id = (0, 6, 3)
-   _struct = Struct('<6BBHHHH')
+   _struct = Struct('<6sBHHHH')
    _ends_with_uint8array = False
 
 class response_gap_connect_direct(Decodable):
-   decoded_type = namedtuple('response_gap_connect_direct_type', (
-      'result',
-      'connection_handle',
-   ))
-   decode_struct = Struct('<HB')
+    decoded_type = namedtuple('response_gap_connect_direct_type', (
+        'result',
+        'connection_handle',
+    ))
+    decode_struct = Struct('<HB')
 
 class command_gap_end_procedure(namedtuple('command_gap_end_procedure', '')):
    __slots__ = ()
    _id = (0, 6, 4)
+   _struct = Struct('<')
    _ends_with_uint8array = False
 
 class response_gap_end_procedure(Decodable):
-   decoded_type = namedtuple('response_gap_end_procedure_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_gap_end_procedure_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_gap_connect_selective(namedtuple('command_gap_connect_selective', 'conn_interval_min conn_interval_max timeout latency')):
    __slots__ = ()
@@ -995,11 +1006,11 @@ class command_gap_connect_selective(namedtuple('command_gap_connect_selective', 
    _ends_with_uint8array = False
 
 class response_gap_connect_selective(Decodable):
-   decoded_type = namedtuple('response_gap_connect_selective_type', (
-      'result',
-      'connection_handle',
-   ))
-   decode_struct = Struct('<HB')
+    decoded_type = namedtuple('response_gap_connect_selective_type', (
+        'result',
+        'connection_handle',
+    ))
+    decode_struct = Struct('<HB')
 
 class command_gap_set_filtering(namedtuple('command_gap_set_filtering', 'scan_policy adv_policy scan_duplicate_filtering')):
    __slots__ = ()
@@ -1008,10 +1019,10 @@ class command_gap_set_filtering(namedtuple('command_gap_set_filtering', 'scan_po
    _ends_with_uint8array = False
 
 class response_gap_set_filtering(Decodable):
-   decoded_type = namedtuple('response_gap_set_filtering_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_gap_set_filtering_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_gap_set_scan_parameters(namedtuple('command_gap_set_scan_parameters', 'scan_interval scan_window active')):
    __slots__ = ()
@@ -1020,10 +1031,10 @@ class command_gap_set_scan_parameters(namedtuple('command_gap_set_scan_parameter
    _ends_with_uint8array = False
 
 class response_gap_set_scan_parameters(Decodable):
-   decoded_type = namedtuple('response_gap_set_scan_parameters_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_gap_set_scan_parameters_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_gap_set_adv_parameters(namedtuple('command_gap_set_adv_parameters', 'adv_interval_min adv_interval_max adv_channels')):
    __slots__ = ()
@@ -1032,10 +1043,10 @@ class command_gap_set_adv_parameters(namedtuple('command_gap_set_adv_parameters'
    _ends_with_uint8array = False
 
 class response_gap_set_adv_parameters(Decodable):
-   decoded_type = namedtuple('response_gap_set_adv_parameters_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_gap_set_adv_parameters_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_gap_set_adv_data(namedtuple('command_gap_set_adv_data', 'set_scanrsp adv_data')):
    __slots__ = ()
@@ -1044,45 +1055,45 @@ class command_gap_set_adv_data(namedtuple('command_gap_set_adv_data', 'set_scanr
    _ends_with_uint8array = True
 
 class response_gap_set_adv_data(Decodable):
-   decoded_type = namedtuple('response_gap_set_adv_data_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_gap_set_adv_data_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_gap_set_directed_connectable_mode(namedtuple('command_gap_set_directed_connectable_mode', 'address addr_type')):
    __slots__ = ()
    _id = (0, 6, 10)
-   _struct = Struct('<6BB')
+   _struct = Struct('<6sB')
    _ends_with_uint8array = False
 
 class response_gap_set_directed_connectable_mode(Decodable):
-   decoded_type = namedtuple('response_gap_set_directed_connectable_mode_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_gap_set_directed_connectable_mode_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 
 class event_hardware_io_port_status(Decodable):
-   decoded_type = namedtuple('event_hardware_io_port_status_type', (
-      'timestamp',
-      'port',
-      'irq',
-      'state',
-   ))
-   decode_struct = Struct('<IBBB')
+    decoded_type = namedtuple('event_hardware_io_port_status_type', (
+        'timestamp',
+        'port',
+        'irq',
+        'state',
+    ))
+    decode_struct = Struct('<IBBB')
 
 class event_hardware_soft_timer(Decodable):
-   decoded_type = namedtuple('event_hardware_soft_timer_type', (
-      'handle',
-   ))
-   decode_struct = Struct('<B')
+    decoded_type = namedtuple('event_hardware_soft_timer_type', (
+        'handle',
+    ))
+    decode_struct = Struct('<B')
 
 class event_hardware_adc_result(Decodable):
-   decoded_type = namedtuple('event_hardware_adc_result_type', (
-      'input',
-      'value',
-   ))
-   decode_struct = Struct('<Bh')
+    decoded_type = namedtuple('event_hardware_adc_result_type', (
+        'input',
+        'value',
+    ))
+    decode_struct = Struct('<Bh')
 
 class command_hardware_io_port_config_irq(namedtuple('command_hardware_io_port_config_irq', 'port enable_bits falling_edge')):
    __slots__ = ()
@@ -1091,10 +1102,10 @@ class command_hardware_io_port_config_irq(namedtuple('command_hardware_io_port_c
    _ends_with_uint8array = False
 
 class response_hardware_io_port_config_irq(Decodable):
-   decoded_type = namedtuple('response_hardware_io_port_config_irq_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_hardware_io_port_config_irq_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_hardware_set_soft_timer(namedtuple('command_hardware_set_soft_timer', 'time handle single_shot')):
    __slots__ = ()
@@ -1103,10 +1114,10 @@ class command_hardware_set_soft_timer(namedtuple('command_hardware_set_soft_time
    _ends_with_uint8array = False
 
 class response_hardware_set_soft_timer(Decodable):
-   decoded_type = namedtuple('response_hardware_set_soft_timer_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_hardware_set_soft_timer_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_hardware_adc_read(namedtuple('command_hardware_adc_read', 'input decimation reference_selection')):
    __slots__ = ()
@@ -1115,10 +1126,10 @@ class command_hardware_adc_read(namedtuple('command_hardware_adc_read', 'input d
    _ends_with_uint8array = False
 
 class response_hardware_adc_read(Decodable):
-   decoded_type = namedtuple('response_hardware_adc_read_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_hardware_adc_read_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_hardware_io_port_config_direction(namedtuple('command_hardware_io_port_config_direction', 'port direction')):
    __slots__ = ()
@@ -1127,10 +1138,10 @@ class command_hardware_io_port_config_direction(namedtuple('command_hardware_io_
    _ends_with_uint8array = False
 
 class response_hardware_io_port_config_direction(Decodable):
-   decoded_type = namedtuple('response_hardware_io_port_config_direction_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_hardware_io_port_config_direction_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_hardware_io_port_config_function(namedtuple('command_hardware_io_port_config_function', 'port function')):
    __slots__ = ()
@@ -1139,10 +1150,10 @@ class command_hardware_io_port_config_function(namedtuple('command_hardware_io_p
    _ends_with_uint8array = False
 
 class response_hardware_io_port_config_function(Decodable):
-   decoded_type = namedtuple('response_hardware_io_port_config_function_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_hardware_io_port_config_function_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_hardware_io_port_config_pull(namedtuple('command_hardware_io_port_config_pull', 'port tristate_mask pull_up')):
    __slots__ = ()
@@ -1151,10 +1162,10 @@ class command_hardware_io_port_config_pull(namedtuple('command_hardware_io_port_
    _ends_with_uint8array = False
 
 class response_hardware_io_port_config_pull(Decodable):
-   decoded_type = namedtuple('response_hardware_io_port_config_pull_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_hardware_io_port_config_pull_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_hardware_io_port_write(namedtuple('command_hardware_io_port_write', 'port mask data')):
    __slots__ = ()
@@ -1163,10 +1174,10 @@ class command_hardware_io_port_write(namedtuple('command_hardware_io_port_write'
    _ends_with_uint8array = False
 
 class response_hardware_io_port_write(Decodable):
-   decoded_type = namedtuple('response_hardware_io_port_write_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_hardware_io_port_write_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_hardware_io_port_read(namedtuple('command_hardware_io_port_read', 'port mask')):
    __slots__ = ()
@@ -1175,12 +1186,12 @@ class command_hardware_io_port_read(namedtuple('command_hardware_io_port_read', 
    _ends_with_uint8array = False
 
 class response_hardware_io_port_read(Decodable):
-   decoded_type = namedtuple('response_hardware_io_port_read_type', (
-      'result',
-      'port',
-      'data',
-   ))
-   decode_struct = Struct('<HBB')
+    decoded_type = namedtuple('response_hardware_io_port_read_type', (
+        'result',
+        'port',
+        'data',
+    ))
+    decode_struct = Struct('<HBB')
 
 class command_hardware_spi_config(namedtuple('command_hardware_spi_config', 'channel polarity phase bit_order baud_e baud_m')):
    __slots__ = ()
@@ -1189,10 +1200,10 @@ class command_hardware_spi_config(namedtuple('command_hardware_spi_config', 'cha
    _ends_with_uint8array = False
 
 class response_hardware_spi_config(Decodable):
-   decoded_type = namedtuple('response_hardware_spi_config_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_hardware_spi_config_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 class command_hardware_spi_transfer(namedtuple('command_hardware_spi_transfer', 'channel data')):
    __slots__ = ()
@@ -1201,13 +1212,13 @@ class command_hardware_spi_transfer(namedtuple('command_hardware_spi_transfer', 
    _ends_with_uint8array = True
 
 class response_hardware_spi_transfer(Decodable):
-   decoded_type = namedtuple('response_hardware_spi_transfer_type', (
-      'result',
-      'channel',
-      'data',
-   ))
-   decode_struct = Struct('<HBB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('response_hardware_spi_transfer_type', (
+        'result',
+        'channel',
+        'data',
+    ))
+    decode_struct = Struct('<HBB')
+    ends_with_uint8array = True
 
 class command_hardware_i2c_read(namedtuple('command_hardware_i2c_read', 'address stop length')):
    __slots__ = ()
@@ -1216,12 +1227,12 @@ class command_hardware_i2c_read(namedtuple('command_hardware_i2c_read', 'address
    _ends_with_uint8array = False
 
 class response_hardware_i2c_read(Decodable):
-   decoded_type = namedtuple('response_hardware_i2c_read_type', (
-      'result',
-      'data',
-   ))
-   decode_struct = Struct('<HB')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('response_hardware_i2c_read_type', (
+        'result',
+        'data',
+    ))
+    decode_struct = Struct('<HB')
+    ends_with_uint8array = True
 
 class command_hardware_i2c_write(namedtuple('command_hardware_i2c_write', 'address stop data')):
    __slots__ = ()
@@ -1230,10 +1241,10 @@ class command_hardware_i2c_write(namedtuple('command_hardware_i2c_write', 'addre
    _ends_with_uint8array = True
 
 class response_hardware_i2c_write(Decodable):
-   decoded_type = namedtuple('response_hardware_i2c_write_type', (
-      'written',
-   ))
-   decode_struct = Struct('<B')
+    decoded_type = namedtuple('response_hardware_i2c_write_type', (
+        'written',
+    ))
+    decode_struct = Struct('<B')
 
 class command_hardware_set_txpower(namedtuple('command_hardware_set_txpower', 'power')):
    __slots__ = ()
@@ -1242,8 +1253,8 @@ class command_hardware_set_txpower(namedtuple('command_hardware_set_txpower', 'p
    _ends_with_uint8array = False
 
 class response_hardware_set_txpower(Decodable):
-   decoded_type = namedtuple('response_hardware_set_txpower_type', (
-   ))
+    decoded_type = namedtuple('response_hardware_set_txpower_type', (
+    ))
 
 class command_hardware_timer_comparator(namedtuple('command_hardware_timer_comparator', 'timer channel mode comparator_value')):
    __slots__ = ()
@@ -1252,10 +1263,10 @@ class command_hardware_timer_comparator(namedtuple('command_hardware_timer_compa
    _ends_with_uint8array = False
 
 class response_hardware_timer_comparator(Decodable):
-   decoded_type = namedtuple('response_hardware_timer_comparator_type', (
-      'result',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_hardware_timer_comparator_type', (
+        'result',
+    ))
+    decode_struct = Struct('<H')
 
 
 class command_test_phy_tx(namedtuple('command_test_phy_tx', 'channel length type')):
@@ -1265,8 +1276,8 @@ class command_test_phy_tx(namedtuple('command_test_phy_tx', 'channel length type
    _ends_with_uint8array = False
 
 class response_test_phy_tx(Decodable):
-   decoded_type = namedtuple('response_test_phy_tx_type', (
-   ))
+    decoded_type = namedtuple('response_test_phy_tx_type', (
+    ))
 
 class command_test_phy_rx(namedtuple('command_test_phy_rx', 'channel')):
    __slots__ = ()
@@ -1275,40 +1286,43 @@ class command_test_phy_rx(namedtuple('command_test_phy_rx', 'channel')):
    _ends_with_uint8array = False
 
 class response_test_phy_rx(Decodable):
-   decoded_type = namedtuple('response_test_phy_rx_type', (
-   ))
+    decoded_type = namedtuple('response_test_phy_rx_type', (
+    ))
 
 class command_test_phy_end(namedtuple('command_test_phy_end', '')):
    __slots__ = ()
    _id = (0, 8, 2)
+   _struct = Struct('<')
    _ends_with_uint8array = False
 
 class response_test_phy_end(Decodable):
-   decoded_type = namedtuple('response_test_phy_end_type', (
-      'counter',
-   ))
-   decode_struct = Struct('<H')
+    decoded_type = namedtuple('response_test_phy_end_type', (
+        'counter',
+    ))
+    decode_struct = Struct('<H')
 
 class command_test_phy_reset(namedtuple('command_test_phy_reset', '')):
    __slots__ = ()
    _id = (0, 8, 3)
+   _struct = Struct('<')
    _ends_with_uint8array = False
 
 class response_test_phy_reset(Decodable):
-   decoded_type = namedtuple('response_test_phy_reset_type', (
-   ))
+    decoded_type = namedtuple('response_test_phy_reset_type', (
+    ))
 
 class command_test_get_channel_map(namedtuple('command_test_get_channel_map', '')):
    __slots__ = ()
    _id = (0, 8, 4)
+   _struct = Struct('<')
    _ends_with_uint8array = False
 
 class response_test_get_channel_map(Decodable):
-   decoded_type = namedtuple('response_test_get_channel_map_type', (
-      'channel_map',
-   ))
-   decode_struct = Struct('<B')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('response_test_get_channel_map_type', (
+        'channel_map',
+    ))
+    decode_struct = Struct('<B')
+    ends_with_uint8array = True
 
 class command_test_debug(namedtuple('command_test_debug', 'input')):
    __slots__ = ()
@@ -1317,11 +1331,11 @@ class command_test_debug(namedtuple('command_test_debug', 'input')):
    _ends_with_uint8array = True
 
 class response_test_debug(Decodable):
-   decoded_type = namedtuple('response_test_debug_type', (
-      'output',
-   ))
-   decode_struct = Struct('<B')
-   ends_with_uint8array = True
+    decoded_type = namedtuple('response_test_debug_type', (
+        'output',
+    ))
+    decode_struct = Struct('<B')
+    ends_with_uint8array = True
 
 
 CLASS_NAME_MAP = {
