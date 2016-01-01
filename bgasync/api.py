@@ -1,6 +1,7 @@
 # This file is auto-generated. Edit at your own risk!
 from struct import Struct
 from collections import namedtuple
+from enum import Enum
 from .apibase import encode_command
 from .apibase import Decodable
 
@@ -233,6 +234,14 @@ class response_system_endpoint_set_watermarks(Decodable):
     ))
     decode_struct = Struct('<H')
 
+class system_endpoints(Enum):
+    endpoint_api = 0
+    endpoint_test = 1
+    endpoint_script = 2
+    endpoint_usb = 3
+    endpoint_uart0 = 4
+    endpoint_uart1 = 5
+
 
 class event_flash_ps_key(Decodable):
     decoded_type = namedtuple('event_flash_ps_key_type', (
@@ -421,6 +430,15 @@ class response_attributes_user_write_response(Decodable):
     decoded_type = namedtuple('response_attributes_user_write_response_type', (
     ))
 
+class attributes_attribute_change_reason(Enum):
+    write_request = 0
+    write_command = 1
+    write_request_user = 2
+
+class attributes_attribute_status_flag(Enum):
+    notify = 1
+    indicate = 2
+
 
 class event_connection_status(Decodable):
     decoded_type = namedtuple('event_connection_status_type', (
@@ -582,6 +600,12 @@ class response_connection_raw_tx(Decodable):
         'connection',
     ))
     decode_struct = Struct('<B')
+
+class connection_connstatus(Enum):
+    connected = 1
+    encrypted = 2
+    completed = 4
+    parameters_change = 8
 
 
 class event_attclient_indicated(Decodable):
@@ -802,6 +826,14 @@ class response_attclient_read_multiple(Decodable):
     ))
     decode_struct = Struct('<BH')
 
+class attclient_attribute_value_types(Enum):
+    attribute_value_type_read = 0
+    attribute_value_type_notify = 1
+    attribute_value_type_indicate = 2
+    attribute_value_type_read_by_type = 3
+    attribute_value_type_read_blob = 4
+    attribute_value_type_indicate_rsp_req = 5
+
 
 class event_sm_smp_data(Decodable):
     decoded_type = namedtuple('event_sm_smp_data_type', (
@@ -919,6 +951,22 @@ class command_sm_set_oob_data(namedtuple('command_sm_set_oob_data', 'oob')):
 class response_sm_set_oob_data(Decodable):
     decoded_type = namedtuple('response_sm_set_oob_data_type', (
     ))
+
+class sm_bonding_key(Enum):
+    ltk = 0x01
+    addr_public = 0x02
+    addr_static = 0x04
+    irk = 0x08
+    edivrand = 0x10
+    csrk = 0x20
+    masterid = 0x40
+
+class sm_io_capability(Enum):
+    displayonly = 0
+    displayyesno = 1
+    keyboardonly = 2
+    noinputnooutput = 3
+    keyboarddisplay = 4
 
 
 class event_gap_scan_response(Decodable):
@@ -1071,6 +1119,51 @@ class response_gap_set_directed_connectable_mode(Decodable):
         'result',
     ))
     decode_struct = Struct('<H')
+
+class gap_address_type(Enum):
+    public = 0
+    random = 1
+
+class gap_discoverable_mode(Enum):
+    non_discoverable = 0
+    limited_discoverable = 1
+    general_discoverable = 2
+    broadcast = 3
+    user_data = 4
+
+class gap_connectable_mode(Enum):
+    non_connectable = 0
+    directed_connectable = 1
+    undirected_connectable = 2
+    scannable_connectable = 3
+
+class gap_discover_mode(Enum):
+    discover_limited = 0
+    discover_generic = 1
+    discover_observation = 2
+
+class gap_ad_types(Enum):
+    ad_type_none = 0
+    ad_type_flags = 1
+    ad_type_services_16bit_more = 2
+    ad_type_services_16bit_all = 3
+    ad_type_services_32bit_more = 4
+    ad_type_services_32bit_all = 5
+    ad_type_services_128bit_more = 6
+    ad_type_services_128bit_all = 7
+    ad_type_localname_short = 8
+    ad_type_localname_complete = 9
+    ad_type_txpower = 10
+
+class gap_advertising_policy(Enum):
+    adv_policy_all = 0
+    adv_policy_whitelist_scan = 1
+    adv_policy_whitelist_connect = 2
+    adv_policy_whitelist_all = 3
+
+class gap_scan_policy(Enum):
+    all = 0
+    whitelist = 1
 
 
 class event_hardware_io_port_status(Decodable):
