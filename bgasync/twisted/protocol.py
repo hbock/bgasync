@@ -77,11 +77,20 @@ class BluegigaProtocolBase(Protocol):
 
     def process_event(self, event, event_payload):
         """
-        Process event (class_id, event_id) with event_payload.
+        Process a raw BGAPI event received on the wire.
+
+        :param event: A tuple `(class_id, event_number)` uniquely identifying the event.
+        :param response_payload: The raw payload of the event as a `bytes` object.
         """
         raise NotImplementedError()
 
     def process_command_response(self, command_id, response_payload):
+        """
+        Process a raw BGAPI command response received on the wire.
+
+        :param command_id: A tuple `(class_id, command_number)` uniquely identifying the command.
+        :param response_payload: The raw payload of the command as a `bytes` object.
+        """
         try:
             return_type = api.COMMAND_RETURN_TYPE_MAP[command_id]
             command = return_type.decode(response_payload)
@@ -109,6 +118,17 @@ class BluegigaProtocolBase(Protocol):
 
 
     def send_command(self, command):
+        """
+        Send a BGAPI command (from `bgasync.api`) to the target device.
+
+        :param command: A BGAPI command instance.
+        :return: A `Deferred` instance that will be called back with the
+                 command response from the target device.
+
+        Note that `command` may not be sent to the device immediately.  If multiple
+        commands are in flight, only one is sent at a time until the last command's
+        response has been received.
+        """
         # We have no commands in flight, write to the transport immediately.
         # Otherwise, enqueue the command to be sent later; the API documentation
         # suggests not sending multiple commands to the device without first
@@ -126,6 +146,7 @@ class BluegigaProtocolBase(Protocol):
         return deferred
 
     def dataReceived(self, data):
+        # TODO: faster buffering
         self.buffer += data
 
         if STATE_RECV_HEADER == self.state:
