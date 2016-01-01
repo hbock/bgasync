@@ -1,11 +1,12 @@
-import unittest
+from twisted.trial import unittest
 
+from bgasync import api
 from bgasync.twisted import protocol
-
+from twisted.test.proto_helpers import StringTransport
 
 class BGMessageSpy(protocol.BluegigaProtocolBase):
     def __init__(self):
-        super().__init__()
+        protocol.BluegigaProtocolBase.__init__(self)
         self.cmd_resp_list = []
         self.event_list = []
 
@@ -71,16 +72,85 @@ class ProtocolTests(unittest.TestCase):
     """ Simple tests for validating Twisted BGAPI message sender/receiver """
     def setUp(self):
         self.proto = protocol.BluegigaProtocol()
+        self.proto.transport = StringTransport()
 
-    # Test decoding a few select command responses from the real API
+    # Test sending a command and decoding its responses from the real API
     def test_gap_connect_direct_response(self):
+        cmd = api.command_gap_connect_direct(
+            address=b"abcdef", addr_type=1,
+            conn_interval_min=50, conn_interval_max=60,
+            timeout=50, latency=50
+        )
+
+        def foo(response):
+            self.assertEqual(0xBEEF, response.result)
+            self.assertEqual(0x01, response.connection_handle)
+
+        d = self.proto.send_command(cmd)
+        d.addCallback(foo)
+        self.assertEqual(b"\x00\x0f\x06\x03abcdef\x012\x00<\x002\x002\x00", self.proto.transport.value())
+
         # command = GAP (0x06) Connect Direct (0x03)
         # resp = result=0xBEEF; handle=0x01
         self.proto.dataReceived(b"\x00\x03\x06\x03\xEF\xBE\x01")
-        # TODO deferred?
+        return d
 
     def test_sm_delete_bonding_response(self):
+        cmd = api.command_sm_delete_bonding(handle=0xAA)
+
+        def foo(response):
+            self.assertEqual(0xFEED, response.result)
+
+        d = self.proto.send_command(cmd)
+        d.addCallback(foo)
+
+        # command = SM (0x05) Delete Bonding (0x02)
+        self.assertEqual(b"\x00\x01\x05\x02\xaa", self.proto.transport.value())
+        # resp = errorcode=0xFEED
+        self.proto.dataReceived(b"\x00\x02\x05\x02\xED\xFE")
+
+        return d
+
+    def test_multiple_commands(self):
+        cd_cmd = api.command_gap_connect_direct(
+            address=b"abcdef", addr_type=1,
+            conn_interval_min=50, conn_interval_max=60,
+            timeout=50, latency=50
+        )
+        db_cmd = api.command_sm_delete_bonding(handle=0xAA)
+
+        def db_callback(response):
+            self.assertEqual(0xFEED, response.result)
+
+        def cd_callback(response):
+            pass
+
+        db_deferred = self.proto.send_command(db_cmd)
+        db_deferred.addCallback(db_callback)
+
+        cd_deferred = self.proto.send_command(cd_cmd)
+        cd_deferred.addCallback(cd_callback)
+
+        # command = SM (0x05) Delete Bonding (0x02)
+        self.assertEqual(b"\x00\x01\x05\x02\xaa", self.proto.transport.value())
+
+        # Clear transport
+        self.proto.transport.clear()
+
         # command = SM (0x05) Delete Bonding (0x02)
         # resp = errorcode=0xFEED
         self.proto.dataReceived(b"\x00\x02\x05\x02\xED\xFE")
-        # TODO deferred?
+        self.assertTrue(db_deferred.called)
+
+        # Second (queed) command should now be sent
+        self.assertEqual(b"\x00\x0f\x06\x03abcdef\x012\x00<\x002\x002\x00", self.proto.transport.value())
+        self.proto.transport.clear()
+
+        # command = GAP (0x06) Connect Direct (0x03)
+        # resp = result=0xBEEF; handle=0x01
+        self.proto.dataReceived(b"\x00\x03\x06\x03\xEF\xBE\x01")
+
+        # No more commands to send
+        self.assertEqual(b"", self.proto.transport.value())
+
+        return cd_deferred

@@ -2,8 +2,13 @@
 bgasync.twisted.protocol - Main transmit/receive protocol for Twisted.
 """
 from twisted.internet.protocol import Protocol
+from twisted.internet.defer import Deferred
+from twisted.logger import Logger
+
 from bgasync.apibase import *
 from bgasync import api
+
+from collections import deque
 
 __all__ = [
     "BluegigaProtocolBase",
@@ -19,6 +24,8 @@ class BluegigaProtocolBase(Protocol):
     """
     Base BGAPI message sender/receiver.
     """
+    log = Logger()
+
     def __init__(self):
         #: Buffered data (bytes)
         self.buffer = b""
@@ -28,6 +35,9 @@ class BluegigaProtocolBase(Protocol):
         self.current_message_length = 0
         self.current_message_id = None
         self.current_message_type = None
+
+        self.command_queue = deque()
+        self.command_response_deferred_queue = deque()
 
     def process_header(self):
         header, self.buffer = self.buffer[:HEADER_LENGTH], self.buffer[HEADER_LENGTH:]
@@ -41,6 +51,10 @@ class BluegigaProtocolBase(Protocol):
         self.current_message_id = (class_id, command_id)
         self.current_message_type = msg_type
 
+        self.log.debug(
+            "Received BGAPI header: type={type:02x}; length={length}; class={class_id} / command={command_id}",
+            type=msg_type, length=self.current_message_length, class_id=class_id, command_id=command_id
+        )
         # TODO: process different/unknown technology types
 
         self.state = STATE_RECV_PAYLOAD
@@ -50,9 +64,13 @@ class BluegigaProtocolBase(Protocol):
                                self.buffer[self.current_message_length:]
 
         if BGAPI_MESSAGE_TYPE_EVENT == self.current_message_type:
+            self.log.debug("Received event {event}; payload raw = {raw!r}",
+                           event=self.current_message_id, raw=payload)
             self.process_event(self.current_message_id, payload)
 
         elif BGAPI_MESSAGE_TYPE_COMMAND == self.current_message_type:
+            self.log.debug("Received command response {event}; payload raw = {raw!r}",
+                           event=self.current_message_id, raw=payload)
             self.process_command_response(self.current_message_id, payload)
 
         self.state = STATE_RECV_HEADER
@@ -64,7 +82,48 @@ class BluegigaProtocolBase(Protocol):
         raise NotImplementedError()
 
     def process_command_response(self, command_id, response_payload):
-        raise NotImplementedError()
+        try:
+            return_type = api.COMMAND_RETURN_TYPE_MAP[command_id]
+            command = return_type.decode(response_payload)
+
+            # We expect that the response deferred queue cannot be empty;
+            # i.e., we should not be receiving unsolicited command responses.
+            assert self.command_response_deferred_queue
+
+            deferred = self.command_response_deferred_queue.popleft()
+            deferred.callback(command)
+
+            # If commands are queued up, pop and consume one.
+            if self.command_queue:
+                command = self.command_queue.popleft()
+                self._write_command(command)
+
+        except KeyError:
+            self.log.error("Received command response for unknown command {cmd}", cmd=command_id)
+
+    def _write_command(self, command):
+        """ Helper for writing a command out to the transport. """
+        command_encoded = api.encode_command(command)
+        self.log.debug("Transmitting command {cmd} [raw = {raw!r}]", cmd=command, raw=command_encoded)
+        self.transport.write(command_encoded)
+
+
+    def send_command(self, command):
+        # We have no commands in flight, write to the transport immediately.
+        # Otherwise, enqueue the command to be sent later; the API documentation
+        # suggests not sending multiple commands to the device without first
+        # receiving the response.
+        if not self.command_response_deferred_queue:
+            self._write_command(command)
+
+        else:
+            self.command_queue.append(command)
+
+        # Store deferred for command response.
+        deferred = Deferred()
+        self.command_response_deferred_queue.append(deferred)
+
+        return deferred
 
     def dataReceived(self, data):
         self.buffer += data
@@ -78,22 +137,11 @@ class BluegigaProtocolBase(Protocol):
                 self.process_payload()
 
 class BluegigaProtocol(BluegigaProtocolBase):
-    def send_command(self, command):
-        self.transport.write(api.encode_command(command))
-
     def process_event(self, event_id, event_payload):
         try:
-            event = api.EVENT_TYPE_MAP[event_id]
-            # TODO: decode me
+            event_type = api.EVENT_TYPE_MAP[event_id]
+            event = event_type.decode(event_payload)
+            self.log.debug("Received API event: {event}", event=event)
 
         except KeyError:
-            print("Unknown class/event combination {}".format(event_id))
-
-    def process_command_response(self, command_id, response_payload):
-        try:
-            return_type = api.COMMAND_RETURN_TYPE_MAP[command_id]
-            command = return_type.decode(response_payload)
-            print(repr(command))
-
-        except KeyError:
-            print("Unknown command {}".format(command_id))
+            self.log.error("Received unknown event type {event}", event=event_id)
