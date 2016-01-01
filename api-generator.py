@@ -11,7 +11,7 @@ BASE_DATA_TYPE_TO_STRUCT = {
     'uint8':  'B',
     'uint16': 'H',
     'uint32': 'I',
-    'bd_addr': '6B'
+    'bd_addr': '6s'
     # uint8array is special
 }
 
