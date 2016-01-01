@@ -126,8 +126,7 @@ def generate_commands_from_class(class_element, output_fp):
         # Performance; don't create instance dict
         output_fp.write("   __slots__ = ()\n")
         output_fp.write("   _id = (0, {}, {})\n".format(class_index, command_index))
-        if struct_spec:
-            output_fp.write("   _struct = Struct('<{}')\n".format(struct_spec))
+        output_fp.write("   _struct = Struct('<{}')\n".format(struct_spec))
         output_fp.write("   _ends_with_uint8array = {}\n".format("True" if ends_with_uint8array else "False"))
         output_fp.write("\n")
 
