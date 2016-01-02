@@ -2,6 +2,7 @@
 API generator for the BGAPI protocol using the bleapi.xml format.
 """
 import sys
+import argparse
 import xml.dom.minidom
 
 # Map "base" datatypes to struct specifiers
@@ -232,20 +233,13 @@ def generate_api_from_document(document, output_fp):
             output_fp.write("    ({}, {}): {},\n".format(class_index, command_index, response_cls))
     output_fp.write("}\n\n")
 
-
-def usage():
-    sys.stderr.write("Usage: %s /path/to/bleapi.xml\n")
-    sys.exit(1)
-
 def main():
-    try:
-        api_xml_path = sys.argv[1]
+    parser = argparse.ArgumentParser()
+    parser.add_argument("api_xml_path", help="Path to XML file describing BGAPI")
 
-    except IndexError:
-        sys.stderr.write("Missing XML API file!\n")
-        usage()
+    args = parser.parse_args()
 
-    with open(api_xml_path, "rb") as api_xml_fp:
+    with open(args.api_xml_path, "rb") as api_xml_fp:
         output_fp = sys.stdout
 
         document = xml.dom.minidom.parse(api_xml_fp)
