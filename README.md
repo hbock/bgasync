@@ -24,10 +24,13 @@ Currently only 2.7 and Python 3.4+ are explicitly supported.
 ## Twisted Support
 
 Twisted support for the BGAPI protocol is provided via the `bgasync.twisted` package.
-Currently support is limited to working with commands and events in the BGAPI; the plan
-is to provide higher-level APIs as well.
+Currently support is limited to working with commands and events in the BGAPI using
+`BluegigaProtocol`; the plan is to provide higher-level APIs for GATT, SMP, etc. operations
+as well.
 
-Twisted support for Windows on Python 3.5 is limited to sockets via select(); thus
+### Windows
+
+Twisted support for Windows on Python 3 is limited to sockets via select(); thus
 the serial port support doesn't work yet.  Workarounds are forthcoming; for now you
 can create a serial-TCP bridge in a separate process or thread and use BluegigaProtocol
 on a TCP connection.
