@@ -4,17 +4,17 @@ from bgasync import api
 from bgasync.twisted import protocol
 from twisted.test.proto_helpers import StringTransport
 
-class BGMessageSpy(protocol.BluegigaProtocolBase):
+class BGMessageSpy(protocol.BluegigaProtocol):
     def __init__(self):
-        protocol.BluegigaProtocolBase.__init__(self)
+        protocol.BluegigaProtocol.__init__(self)
         self.cmd_resp_list = []
         self.event_list = []
 
-    def process_command_response(self, command_id, response_payload):
+    def process_command_response_raw(self, command_id, response_payload):
         self.cmd_resp_list.append((command_id, response_payload))
 
-    def process_event(self, event, event_payload):
-        self.event_list.append((event, event_payload))
+    def process_event_raw(self, event_id, event_payload):
+        self.event_list.append((event_id, event_payload))
 
 class ProtocolBaseTests(unittest.TestCase):
     """ Simple tests for validating Twisted BGAPI message sender/receiver """
