@@ -19,13 +19,17 @@ __all__ = [
 
 HEADER_LENGTH = HEADER_STRUCT.size
 
-class BluegigaProtocol(Protocol):
+class BluegigaProtocol(Protocol, api.EventDecoderMixin):
     """
     Base BGAPI message sender/receiver.
     """
     log = Logger()
 
     def __init__(self):
+        # Protocol is old-style and has no __init__();
+        # api.EventDecoderMixin is new-style
+        super(BluegigaProtocol, self).__init__()
+
         #: Buffered data (bytes)
         self.buffer = b""
         self.state = STATE_RECV_HEADER
@@ -85,23 +89,12 @@ class BluegigaProtocol(Protocol):
         """
         try:
             event_type = api.EVENT_TYPE_MAP[event_id]
-            event_id = event_type.decode(event_payload)
-            self.log.debug("Received API event: {event}", event=event_id)
-            self.process_event(event_id)
+            event = event_type.decode(event_payload)
+            self.log.debug("Received API event: {event}", event=event)
+            self.handle_event(event_id, event)
 
         except KeyError:
             self.log.error("Received unknown event type {event}", event=event_id)
-
-    def process_event(self, event):
-        """
-        Called back when a decoded BGAPI event received on the wire.
-
-        The default is to ignore all events; subclasses can choose
-        to interpret the event as needed.
-
-        :param event: The decoded event instance; see :mod:`bgasync.api`.
-        """
-        pass
 
     def process_command_response_raw(self, command_id, response_payload):
         """

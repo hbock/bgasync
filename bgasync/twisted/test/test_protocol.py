@@ -154,3 +154,18 @@ class ProtocolTests(unittest.TestCase):
         self.assertEqual(b"", self.proto.transport.value())
 
         return cd_deferred
+
+    def test_event_decode_and_dispatch(self):
+        event_list = []
+
+        class EventCaptureProtocol(protocol.BluegigaProtocol):
+            def handle_event_connection_disconnected(self, event):
+                event_list.append(event)
+
+        proto = EventCaptureProtocol()
+        proto.transport = StringTransport()
+
+        proto.dataReceived(b"\x80\x03\x03\x04\x05\xEF\xBE")
+        self.assertEqual(1, len(event_list))
+        self.assertEqual(5, event_list[0].connection)
+        self.assertEqual(0xBEEF, event_list[0].reason)
