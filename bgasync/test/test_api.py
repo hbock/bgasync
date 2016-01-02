@@ -64,3 +64,24 @@ class ApiTest(unittest.TestCase):
         self.assertEqual(1, api.attributes_attribute_change_reason.write_command.value)
         self.assertEqual(1, api.attributes_attribute_status_flag.notify.value)
         self.assertEqual(0x20, api.sm_bonding_key.csrk.value)
+
+    def test_event_decoder_mixin(self):
+        class EventDecoder(api.EventDecoderMixin):
+            def __init__(self):
+                super(EventDecoder, self).__init__()
+                self.last_event = None
+
+            def handle_event_connection_disconnected(self, event):
+                self.last_event = event
+            def handle_event_system_boot(self, event):
+                self.last_event = event
+
+        event = b"\x05\x43\x56"
+
+        e = EventDecoder()
+        e.handle_event((3, 4), api.event_connection_disconnected.decode(event))
+
+        self.assertIsNotNone(e.last_event)
+        self.assertEqual(5, e.last_event.connection)
+        self.assertEqual(0x5643, e.last_event.reason)
+

@@ -1567,3 +1567,112 @@ COMMAND_RETURN_TYPE_MAP = {
     (8, 5): response_test_debug,
 }
 
+class EventDecoderMixin(object):
+    def __init__(self):
+        self.event_type_map = {
+            (0, 0): self.handle_event_system_boot,
+            (0, 1): self.handle_event_system_debug,
+            (0, 2): self.handle_event_system_endpoint_watermark_rx,
+            (0, 3): self.handle_event_system_endpoint_watermark_tx,
+            (0, 4): self.handle_event_system_script_failure,
+            (0, 5): self.handle_event_system_no_license_key,
+            (1, 0): self.handle_event_flash_ps_key,
+            (2, 0): self.handle_event_attributes_value,
+            (2, 1): self.handle_event_attributes_user_read_request,
+            (2, 2): self.handle_event_attributes_status,
+            (3, 0): self.handle_event_connection_status,
+            (3, 1): self.handle_event_connection_version_ind,
+            (3, 2): self.handle_event_connection_feature_ind,
+            (3, 3): self.handle_event_connection_raw_rx,
+            (3, 4): self.handle_event_connection_disconnected,
+            (4, 0): self.handle_event_attclient_indicated,
+            (4, 1): self.handle_event_attclient_procedure_completed,
+            (4, 2): self.handle_event_attclient_group_found,
+            (4, 3): self.handle_event_attclient_attribute_found,
+            (4, 4): self.handle_event_attclient_find_information_found,
+            (4, 5): self.handle_event_attclient_attribute_value,
+            (4, 6): self.handle_event_attclient_read_multiple_response,
+            (5, 0): self.handle_event_sm_smp_data,
+            (5, 1): self.handle_event_sm_bonding_fail,
+            (5, 2): self.handle_event_sm_passkey_display,
+            (5, 3): self.handle_event_sm_passkey_request,
+            (5, 4): self.handle_event_sm_bond_status,
+            (6, 0): self.handle_event_gap_scan_response,
+            (6, 1): self.handle_event_gap_mode_changed,
+            (7, 0): self.handle_event_hardware_io_port_status,
+            (7, 1): self.handle_event_hardware_soft_timer,
+            (7, 2): self.handle_event_hardware_adc_result,
+        }
+
+    def handle_event_system_boot(self, event):
+        pass
+    def handle_event_system_debug(self, event):
+        pass
+    def handle_event_system_endpoint_watermark_rx(self, event):
+        pass
+    def handle_event_system_endpoint_watermark_tx(self, event):
+        pass
+    def handle_event_system_script_failure(self, event):
+        pass
+    def handle_event_system_no_license_key(self, event):
+        pass
+    def handle_event_flash_ps_key(self, event):
+        pass
+    def handle_event_attributes_value(self, event):
+        pass
+    def handle_event_attributes_user_read_request(self, event):
+        pass
+    def handle_event_attributes_status(self, event):
+        pass
+    def handle_event_connection_status(self, event):
+        pass
+    def handle_event_connection_version_ind(self, event):
+        pass
+    def handle_event_connection_feature_ind(self, event):
+        pass
+    def handle_event_connection_raw_rx(self, event):
+        pass
+    def handle_event_connection_disconnected(self, event):
+        pass
+    def handle_event_attclient_indicated(self, event):
+        pass
+    def handle_event_attclient_procedure_completed(self, event):
+        pass
+    def handle_event_attclient_group_found(self, event):
+        pass
+    def handle_event_attclient_attribute_found(self, event):
+        pass
+    def handle_event_attclient_find_information_found(self, event):
+        pass
+    def handle_event_attclient_attribute_value(self, event):
+        pass
+    def handle_event_attclient_read_multiple_response(self, event):
+        pass
+    def handle_event_sm_smp_data(self, event):
+        pass
+    def handle_event_sm_bonding_fail(self, event):
+        pass
+    def handle_event_sm_passkey_display(self, event):
+        pass
+    def handle_event_sm_passkey_request(self, event):
+        pass
+    def handle_event_sm_bond_status(self, event):
+        pass
+    def handle_event_gap_scan_response(self, event):
+        pass
+    def handle_event_gap_mode_changed(self, event):
+        pass
+    def handle_event_hardware_io_port_status(self, event):
+        pass
+    def handle_event_hardware_soft_timer(self, event):
+        pass
+    def handle_event_hardware_adc_result(self, event):
+        pass
+    def handle_event(self, event_id, event):
+        try:
+            method = self.event_type_map[event_id]
+            method(event)
+        except KeyError:
+            ## Unsupported event (log? handle_unsupported_event()?
+            pass
+

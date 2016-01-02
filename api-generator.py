@@ -233,6 +233,29 @@ def generate_api_from_document(document, output_fp):
             output_fp.write("    ({}, {}): {},\n".format(class_index, command_index, response_cls))
     output_fp.write("}\n\n")
 
+    # Create a mixin class for dispatching decoded events individually
+    output_fp.write("class EventDecoderMixin(object):\n")
+    output_fp.write("    def __init__(self):\n")
+    # Event table
+    output_fp.write("        self.event_type_map = {\n")
+    for class_index, class_name, command_list, event_list in class_list:
+        for event_index, event_typename in event_list:
+            output_fp.write("            ({}, {}): self.handle_{},\n".format(class_index, event_index, event_typename))
+    output_fp.write("        }\n\n")
+    # Event dispatch methods
+    for class_index, class_name, command_list, event_list in class_list:
+        for event_index, event_typename in event_list:
+            output_fp.write("    def handle_{}(self, event):\n".format(event_typename))
+            output_fp.write("        pass\n")
+    # Event dispatch
+    output_fp.write("    def handle_event(self, event_id, event):\n")
+    output_fp.write("        try:\n")
+    output_fp.write("            method = self.event_type_map[event_id]\n")
+    output_fp.write("            method(event)\n")
+    output_fp.write("        except KeyError:\n")
+    output_fp.write("            ## Unsupported event (log? handle_unsupported_event()?\n")
+    output_fp.write("            pass\n\n")
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("api_xml_path", help="Path to XML file describing BGAPI")
