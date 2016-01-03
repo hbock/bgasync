@@ -22,9 +22,7 @@ def command_response_cb(response, protocol):
     print("  * LL version {}".format(response.ll_version))
 
     response = yield protocol.send_command(command_system_address_get())
-    print("Bluetooth address: {}".format(
-        ":".join(("%02x" % (ord(octet),) for octet in response.address))
-    ))
+    print("Bluetooth address: {}".format(get_address_string(response.address)))
 
     response = yield protocol.send_command(command_system_get_counters())
     print("Device counters:\n"
