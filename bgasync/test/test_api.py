@@ -3,7 +3,7 @@ from bgasync import api
 
 class ApiTest(unittest.TestCase):
     """
-    Test examples of generated code from api.api
+    Test examples of generated code from bgasync.api
     """
     def setUp(self):
         pass
