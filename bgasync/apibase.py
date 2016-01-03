@@ -21,6 +21,41 @@ BGAPI_MESSAGE_LENGTH_HIGH_MASK     = 0x07
 BGAPI_TECHNOLOGY_BLUETOOTH_SMART = 0
 BGAPI_TECHNOLOGY_WIFI = 1
 
+## Error codes
+
+# BGAPI protocol errors
+ERR_BGAPI_INVALID_PARAMETER     = 0x0180
+ERR_BGAPI_DEVICE_IN_WRONG_STATE = 0x0181
+ERR_BGAPI_OUT_OF_MEMORY         = 0x0182
+
+ERR_CODE_STRING_MAP = {
+    ERR_BGAPI_INVALID_PARAMETER:     "Invalid parameter",
+    ERR_BGAPI_DEVICE_IN_WRONG_STATE: "Device in wrong state to receive command",
+    ERR_BGAPI_OUT_OF_MEMORY:         "Out of memory"
+}
+
+def get_error_code_string(errorcode):
+    """
+    Translate a BGAPI error code into a human-readable string.
+
+    Does not throw an exception on an unknown `errorcode`; simply returns
+    "Unknown error (0xYYYY)".
+
+    :param errorcode: BGAPI error code (16 bits)
+    :return: A string corresponding to `errorcode`.
+    """
+    return ERR_CODE_STRING_MAP.get(errorcode, "Unknown error (0x{:04x})".format(errorcode))
+
+def get_address_string(address_raw, delimiter=":"):
+    """
+    Convert a Bluetooth address in bytes form into a delimited string representation.
+
+    :param address_raw: Bluetooth address, as a bytes instance.
+    :param delimiter: Delimiter to use between octets.
+    :return: A string representing `address_raw` delimited by `delimiter`.
+    """
+    return delimiter.join("{:02x}".format(ord(octet)) for octet in address_raw)
+
 class Decodable(object):
     decoded_type = namedtuple('undefined', ())
     #: structure definition for decoded_type
