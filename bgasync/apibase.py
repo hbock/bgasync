@@ -24,14 +24,91 @@ BGAPI_TECHNOLOGY_WIFI = 1
 ## Error codes
 
 # BGAPI protocol errors
-ERR_BGAPI_INVALID_PARAMETER     = 0x0180
-ERR_BGAPI_DEVICE_IN_WRONG_STATE = 0x0181
-ERR_BGAPI_OUT_OF_MEMORY         = 0x0182
+ERR_BGAPI_INVALID_PARAMETER       = 0x0180
+ERR_BGAPI_DEVICE_IN_WRONG_STATE   = 0x0181
+ERR_BGAPI_OUT_OF_MEMORY           = 0x0182
+ERR_BGAPI_FEATURE_NOT_IMPLEMENTED = 0x0183
+ERR_BGAPI_COMMAND_NOT_RECOGNIZED  = 0x0184
+ERR_BGAPI_TIMEOUT                 = 0x0185
+ERR_BGAPI_NOT_CONNECTED           = 0x0186
+ERR_BGAPI_UNDERFLOW_OR_OVERFLOW   = 0x0187
+ERR_BGAPI_USER_ATTRIBUTE          = 0x0188
+ERR_BGAPI_INVALID_LICENSE_KEY     = 0x0189
+ERR_BGAPI_COMMAND_TOO_LONG        = 0x018A
+ERR_BGAPI_OUT_OF_BONDS            = 0x018B
+
+# Bluetooth errors
+ERR_BT_AUTHENTICATION_FAILURE     = 0x0205
+ERR_BT_PIN_OR_KEY_MISSING         = 0x0206
+ERR_BT_MEMORY_CAPACITY_EXCEEDED   = 0x0207
+ERR_BT_CONNECTION_TIMEOUT         = 0x0208
+ERR_BT_CONNECTION_LIMIT_EXCEEDED  = 0x0209
+ERR_BT_COMMAND_DISALLOWED         = 0x020C
+ERR_BT_INVALID_PARAMETERS         = 0x0212
+ERR_BT_REMOTE_USER_TERMINATED     = 0x0213
+ERR_BT_LOCAL_USER_TERMINATED      = 0x0216
+ERR_BT_LL_RESPONSE_TIMEOUT        = 0x0222
+ERR_BT_LL_INSTANT_PASSED          = 0x0228
+ERR_BT_CONTROLLER_BUSY            = 0x023A
+ERR_BT_UNACCEPTABLE_CONN_INTERVAL = 0x023B
+ERR_BT_DIRECTED_ADV_TIMEOUT       = 0x023C
+ERR_BT_MIC_FAILURE                = 0x023D
+ERR_BT_CONNECTION_ESTABLISH_FAIL  = 0x023E
+
+# Security Manager errors
+ERR_SM_PASSKEY_ENTRY_FAILED        = 0x0301
+ERR_SM_OOB_DATA_NOT_AVAILABLE      = 0x0302
+ERR_SM_AUTHENTICATION_REQUIREMENTS = 0x0303
+ERR_SM_CONFIRM_VALUE_FAILED        = 0x0304
+ERR_SM_PAIRING_NOT_SUPPORTED       = 0x0305
+ERR_SM_ENCRYPTION_KEY_SIZE         = 0x0306
+ERR_SM_COMMAND_NOT_SUPPORTED       = 0x0307
+ERR_SM_UNSPECIFIED_REASON          = 0x0308
+ERR_SM_REPEATED_ATTEMPTS           = 0x0309
+ERR_SM_INVALID_PARAMETERS          = 0x030A
 
 ERR_CODE_STRING_MAP = {
-    ERR_BGAPI_INVALID_PARAMETER:     "Invalid parameter",
-    ERR_BGAPI_DEVICE_IN_WRONG_STATE: "Device in wrong state to receive command",
-    ERR_BGAPI_OUT_OF_MEMORY:         "Out of memory"
+    # BGAPI
+    ERR_BGAPI_INVALID_PARAMETER:       "BGAPI: invalid parameter",
+    ERR_BGAPI_DEVICE_IN_WRONG_STATE:   "Device in wrong state to receive command",
+    ERR_BGAPI_OUT_OF_MEMORY:           "Out of memory",
+    ERR_BGAPI_FEATURE_NOT_IMPLEMENTED: "Feature not implemented",
+    ERR_BGAPI_COMMAND_NOT_RECOGNIZED:  "Command not recognized",
+    ERR_BGAPI_TIMEOUT:                 "Command or procedure failed due to timeout",
+    ERR_BGAPI_NOT_CONNECTED:           "Connection handle is not valid [not connected]",
+    ERR_BGAPI_UNDERFLOW_OR_OVERFLOW:   "Command would cause overflow or underflow error",
+    ERR_BGAPI_USER_ATTRIBUTE:          "User attribute was accessed through API which is not supported",
+    ERR_BGAPI_INVALID_LICENSE_KEY:     "No valid license key found",
+    ERR_BGAPI_COMMAND_TOO_LONG:        "Command maximum length exceeded",
+    ERR_BGAPI_OUT_OF_BONDS:            "Bonding procedure can't be started; no space for bond",
+
+    # BT
+    ERR_BT_AUTHENTICATION_FAILURE:     "Pairing or authentication failure; incorrect PIN or link key",
+    ERR_BT_PIN_OR_KEY_MISSING:         "Pairing failed because of missing key",
+    ERR_BT_MEMORY_CAPACITY_EXCEEDED:   "Controller is out of memory",
+    ERR_BT_CONNECTION_TIMEOUT:         "Link supervision timeout exceeded",
+    ERR_BT_CONNECTION_LIMIT_EXCEEDED:  "Controller is at connection limit",
+    ERR_BT_COMMAND_DISALLOWED:         "Command requested cannot be executed in current controller state",
+    ERR_BT_INVALID_PARAMETERS:         "Command contained invalid parameters",
+    ERR_BT_REMOTE_USER_TERMINATED:     "User on the remote device terminated the connection",
+    ERR_BT_LOCAL_USER_TERMINATED:      "Local device terminated the connection",
+    ERR_BT_LL_RESPONSE_TIMEOUT:        "Connection terminated due to link-layer procedure timeout",
+    ERR_BT_LL_INSTANT_PASSED:          "Received link-layer control packet where instant was in the past",
+    ERR_BT_CONTROLLER_BUSY:            "Operation rejected because controller is busy",
+    ERR_BT_UNACCEPTABLE_CONN_INTERVAL: "Remote device terminated the connection due to an unacceptable connection interval",
+    ERR_BT_DIRECTED_ADV_TIMEOUT:       "Directed advertising completed without a connection being established",
+    ERR_BT_MIC_FAILURE:                "Connection terminated due to failed MIC on received packet",
+    ERR_BT_CONNECTION_ESTABLISH_FAIL:  "LL initiated connection; the controller did not receive any packets from the remote end",
+
+    # SM
+    ERR_SM_PASSKEY_ENTRY_FAILED:        "User input of passkey failed (possibly canceled)",
+    ERR_SM_OOB_DATA_NOT_AVAILABLE:      "Out of band data is not available for authentication",
+    ERR_SM_AUTHENTICATION_REQUIREMENTS: "Pairing authentication requirements cannot be met due to I/O capabilities of one or both devices",
+    ERR_SM_CONFIRM_VALUE_FAILED:        "The confirm value does not match the calculated compare value",
+    ERR_SM_PAIRING_NOT_SUPPORTED:       "Pairing is not supported by the device",
+    ERR_SM_ENCRYPTION_KEY_SIZE:         "Encryption key size is insufficient for the security requirements of the device",
+    ERR_SM_COMMAND_NOT_SUPPORTED:       "The SMP command received is not supported on this device",
+    ERR_SM_UNSPECIFIED_REASON:          "Pairing failed due to an unspecified reason",
 }
 
 def get_error_code_string(errorcode):
