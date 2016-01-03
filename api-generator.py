@@ -170,12 +170,13 @@ def generate_commands_from_class(class_element, output_fp):
 def generate_api_from_document(document, output_fp):
     # Header; imports
     output_fp.write(
+        "\"\"\" bgasync.api - BGAPI classes, constants, and utility functions. \"\"\"\n"
         "# This file is auto-generated. Edit at your own risk!\n"
         "from struct import Struct\n"
         "from collections import namedtuple\n"
         "from enum import Enum\n"
-        "from .apibase import encode_command\n"
-        "from .apibase import Decodable\n"
+        # We take over everything from apibase.
+        "from .apibase import *\n"
         "\n")
 
     # TODO: Check API level / device name ("ble")

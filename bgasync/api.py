@@ -1,9 +1,9 @@
+""" bgasync.api - BGAPI classes, constants, and utility functions. """
 # This file is auto-generated. Edit at your own risk!
 from struct import Struct
 from collections import namedtuple
 from enum import Enum
-from .apibase import encode_command
-from .apibase import Decodable
+from .apibase import *
 
 class event_system_boot(Decodable):
     decoded_type = namedtuple('event_system_boot_type', (
