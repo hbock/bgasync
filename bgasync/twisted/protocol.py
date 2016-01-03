@@ -107,6 +107,9 @@ class BluegigaProtocol(Protocol, api.EventDecoderMixin):
             return_type = api.COMMAND_RETURN_TYPE_MAP[command_id]
             command = return_type.decode(response_payload)
 
+            self.log.debug("Decoded command response: {rsp}",
+                           event=self.current_message_id, rsp=command)
+
             self.process_command_response(command)
 
         except KeyError:
@@ -172,10 +175,21 @@ class BluegigaProtocol(Protocol, api.EventDecoderMixin):
         # TODO: faster buffering
         self.buffer += data
 
-        if STATE_RECV_HEADER == self.state:
-            if len(self.buffer) >= HEADER_LENGTH:
-                self.process_header()
+        # We may buffer multiple events/command responses
+        # at once, requiring us to loop through the state machine
+        while True:
+            if STATE_RECV_HEADER == self.state:
+                if len(self.buffer) >= HEADER_LENGTH:
+                    self.process_header()
 
-        if STATE_RECV_PAYLOAD == self.state:
-            if len(self.buffer) >= self.current_message_length:
-                self.process_payload()
+                # Cannot consume enough data for header; break
+                else:
+                    break
+
+            if STATE_RECV_PAYLOAD == self.state:
+                if len(self.buffer) >= self.current_message_length:
+                    self.process_payload()
+
+                # Cannot consume enough data for payload; break
+                else:
+                    break

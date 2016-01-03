@@ -17,7 +17,7 @@ class BGMessageSpy(protocol.BluegigaProtocol):
         self.event_list.append((event_id, event_payload))
 
 class ProtocolBaseTests(unittest.TestCase):
-    """ Simple tests for validating Twisted BGAPI message sender/receiver """
+    """ Simple tests for validating Twisted BGAPI message sender/receiver base functionality """
     def setUp(self):
         self.proto = BGMessageSpy()
 
@@ -32,6 +32,24 @@ class ProtocolBaseTests(unittest.TestCase):
     def test_decode_full_event(self):
         self.proto.dataReceived(b"\x80\x04\x0A\x0B5643")
         self.assertEqual(((0x0A, 0x0B), b'5643'), self.proto.event_list[0])
+        self.assertEqual([], self.proto.cmd_resp_list)
+
+    def test_decode_multiple_events(self):
+        """ Test receiving multiple events in one dataReceived call """
+        self.proto.dataReceived(b"\x80\x04\x0A\x0B5643\x80\x04\x0A\x0BYEAH\x80\x04\x0A\x0BRITE")
+        self.assertEqual(3, len(self.proto.event_list))
+        self.assertEqual(((0x0A, 0x0B), b'5643'), self.proto.event_list[0])
+        self.assertEqual(((0x0A, 0x0B), b'YEAH'), self.proto.event_list[1])
+        self.assertEqual(((0x0A, 0x0B), b'RITE'), self.proto.event_list[2])
+        self.assertEqual([], self.proto.cmd_resp_list)
+
+    def test_decode_multiple_events_split(self):
+        """ Test receiving multiple events split across multiple dataReceived calls """
+        self.proto.dataReceived(b"\x80\x08\x0A\x0B56")
+        self.proto.dataReceived(b"43YEAH\x80\x08\x0A\x0BRIGHTNOW")
+        self.assertEqual(2, len(self.proto.event_list))
+        self.assertEqual(((0x0A, 0x0B), b'5643YEAH'), self.proto.event_list[0])
+        self.assertEqual(((0x0A, 0x0B), b'RIGHTNOW'), self.proto.event_list[1])
         self.assertEqual([], self.proto.cmd_resp_list)
 
     def test_decode_full_cmd_resp(self):
@@ -69,7 +87,7 @@ class ProtocolBaseTests(unittest.TestCase):
         self.assertEqual([], self.proto.event_list)
 
 class ProtocolTests(unittest.TestCase):
-    """ Simple tests for validating Twisted BGAPI message sender/receiver """
+    """ Tests for validating Twisted BGAPI message sender/receiver higher level functionality """
     def setUp(self):
         self.proto = protocol.BluegigaProtocol()
         self.proto.transport = StringTransport()
