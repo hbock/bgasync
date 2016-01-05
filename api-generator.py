@@ -149,12 +149,15 @@ def generate_commands_from_class(class_element, output_fp):
                 struct_spec += "B"
                 ends_with_uint8array = True
 
-        output_fp.write("class {0}(namedtuple('{0}', '{1}')):\n".format(command_cls_name, ' '.join(command_field_list)))
-        # Performance; don't create instance dict
-        output_fp.write("   __slots__ = ()\n")
-        output_fp.write("   _id = (0, {}, {})\n".format(class_index, command_index))
-        output_fp.write("   _struct = Struct('<{}')\n".format(struct_spec))
-        output_fp.write("   _ends_with_uint8array = {}\n".format("True" if ends_with_uint8array else "False"))
+        output_fp.write("class {}(CommandEncoder):\n".format(command_cls_name))
+        # Use slots for attributes to save memory, and make them easily accessible..
+        # Just in case there is only one parameter - we need to end the slots tuple with a ,
+        output_fp.write("    __slots__ = ({})\n".format(" ".join('"{}",'.format(field_name) for field_name in command_field_list)))
+        output_fp.write("    _id, _struct, _ends_with_uint8array = ((0, {}, {}), Struct('<{}'), {})\n".format(
+            class_index, command_index, struct_spec, ends_with_uint8array
+        ))
+        output_fp.write("    def __init__(self, {}):\n".format(", ".join(command_field_list)))
+        output_fp.write("        super({}, self).__init__({})\n".format(command_cls_name, ", ".join(command_field_list)))
         output_fp.write("\n")
 
         # Return types from BGAPI commands

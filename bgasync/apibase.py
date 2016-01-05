@@ -170,23 +170,56 @@ HEADER_STRUCT = Struct("<BBBB")
 #  [2] => Command class ID
 #  [3] => Command ID
 
-def encode_command(command):
-    if command._ends_with_uint8array:
-        assert isinstance(command[-1], (bytes, bytearray))
-        # This is a slightly less godawful mess; only pack the first (n-1)
-        # elements of the tuple and the length of the final array.
-        # Append the final array to the payload
-        c = command[:-1] + (len(command[-1]),)
-        payload = command._struct.pack(*c) + command[-1]
+class CommandEncoder(object):
+    """
+    Class for efficiently storing and encoding high-level representations of BGAPI commands.
+    """
+    # Default slots to save memory
+    __slots__ = ("_id", "_struct", "_ends_with_uint8array", "_errorcode_position")
 
-    else:
-        payload = command._struct.pack(*command)
+    def __init__(self, *args):
+        # Assign each item in args in-order to the attributes named by the corresponding class slot.
+        # Note that accessing __slots__ only yields the slots of the most-derived class.
+        # Take advantage of this when iterating.
 
-    tech_id, class_id, command_id = command._id
-    payload_len = len(payload)
-    assert(payload_len < 2048)
+        for arg, slot_name in zip(args, self.__slots__):
+            setattr(self, slot_name, arg)
 
-    b0 = BGAPI_MESSAGE_TYPE_COMMAND | (tech_id << 3) | (payload_len >> 8)
-    header = HEADER_STRUCT.pack(b0, (payload_len & 0xFF), class_id, command_id)
+    def encode(self):
+        """
+        Encode this command in binary form.
+        :return: A `bytes` instance representing the binary form of this BGAPI command.
+        """
+        # Note that accessing __slots__ only yields the slots of the most-derived class.
+        # Take advantage of this when iterating.
+        params = tuple(getattr(self, slot) for slot in self.__slots__)
 
-    return header + payload
+        if self._ends_with_uint8array:
+            assert isinstance(params[-1], (bytes, bytearray))
+            # This is a slightly less godawful mess; only pack the first (n-1)
+            # elements of the tuple and the length of the final array.
+            # Append the final array to the payload
+            c = params[:-1] + (len(params[-1]),)
+            payload = self._struct.pack(*c) + params[-1]
+
+        else:
+            payload = self._struct.pack(*params)
+
+        tech_id, class_id, command_id = self._id
+        payload_len = len(payload)
+        assert(payload_len < 2048)
+
+        b0 = BGAPI_MESSAGE_TYPE_COMMAND | (tech_id << 3) | (payload_len >> 8)
+        header = HEADER_STRUCT.pack(b0, (payload_len & 0xFF), class_id, command_id)
+
+        return header + payload
+
+    def __repr__(self):
+        # repr format:
+        # <command_foo_bar[TECH.CLS.CMD]: param_1=V1, param_2=V2 ...>
+        slot_value_reprs = ["{}={!r}".format(slot, getattr(self, slot)) for slot in self.__slots__]
+        return "<{}[{}]: {}>".format(
+            self.__class__.__name__,
+            ".".join(str(num) for num in self._id),
+            ", ".join(slot_value_reprs)
+        )

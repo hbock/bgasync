@@ -139,7 +139,7 @@ class BluegigaProtocol(Protocol, api.EventDecoderMixin):
 
     def _write_command(self, command):
         """ Helper for writing a command out to the transport. """
-        command_encoded = api.encode_command(command)
+        command_encoded = command.encode()
         self.log.debug("Transmitting command {cmd} [raw = {raw!r}]", cmd=command, raw=command_encoded)
         self.transport.write(command_encoded)
 

@@ -16,8 +16,7 @@ class ApiTest(unittest.TestCase):
             uuid=b"\xef\xbe"
         )
 
-        self.assertEqual(b'\x00\x08\x04\x02\x02\x43\x56\xef\xbe\x02\xef\xbe',
-                         api.encode_command(cmd))
+        self.assertEqual(b'\x00\x08\x04\x02\x02\x43\x56\xef\xbe\x02\xef\xbe', cmd.encode())
 
     def test_attclient_read_by_type_decode_response(self):
         # Test response with multiple parameters
@@ -30,7 +29,7 @@ class ApiTest(unittest.TestCase):
             channel=5,
             data=b"foo"
         )
-        self.assertEqual(b"\x00\x05\x07\x09\x05\x03foo", api.encode_command(cmd))
+        self.assertEqual(b"\x00\x05\x07\x09\x05\x03foo", cmd.encode())
 
     def test_hardware_i2c_read(self):
         cmd = api.command_hardware_i2c_read(
@@ -38,7 +37,7 @@ class ApiTest(unittest.TestCase):
             stop=0,
             length=5
         )
-        self.assertEqual(b"\x00\x03\x07\x0A\x42\x00\x05", api.encode_command(cmd))
+        self.assertEqual(b"\x00\x03\x07\x0A\x42\x00\x05", cmd.encode())
 
     def test_hardware_spi_transfer_decode_response(self):
         # Test decoding a response ending in uint8array
