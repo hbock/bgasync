@@ -30,6 +30,10 @@ def stop_discovery(protocol):
 @inlineCallbacks
 def command_response_cb(response, protocol, duration):
     if response.result != 0:
+        print("Error setting scan parameters: {}".format(api.get_error_code_string(response.result)))
+
+    response = yield protocol.send_command(api.command_gap_discover(mode=api.gap_discover_mode.discover_observation.value))
+    if response.result != 0:
         print("Error starting discovery! {}".format(api.get_error_code_string(response.result)))
 
         # If we're in the wrong state, we may have simply exited
@@ -62,7 +66,7 @@ def main():
     print("Starting scanner (duration {} seconds)".format(args.duration))
     protocol = ScannerProtocol()
     port = SerialPort(protocol, args.serial_port, reactor, baudrate=256000)
-    d = protocol.send_command(api.command_gap_discover(mode=api.gap_discover_mode.discover_observation.value))
+    d = protocol.send_command(api.command_gap_set_scan_parameters(scan_interval=0x4B, scan_window=0x32, active=1))
     d.addCallback(command_response_cb, protocol, args.duration)
 
     if args.verbose:
