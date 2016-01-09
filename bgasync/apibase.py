@@ -22,6 +22,7 @@ BGAPI_TECHNOLOGY_BLUETOOTH_SMART = 0
 BGAPI_TECHNOLOGY_WIFI = 1
 
 ## Error codes
+ERR_SUCCESS = 0x0000
 
 # BGAPI protocol errors
 ERR_BGAPI_INVALID_PARAMETER       = 0x0180
@@ -68,6 +69,7 @@ ERR_SM_REPEATED_ATTEMPTS           = 0x0309
 ERR_SM_INVALID_PARAMETERS          = 0x030A
 
 ERR_CODE_STRING_MAP = {
+    ERR_SUCCESS:                       "Successful",
     # BGAPI
     ERR_BGAPI_INVALID_PARAMETER:       "BGAPI: invalid parameter",
     ERR_BGAPI_DEVICE_IN_WRONG_STATE:   "Device in wrong state to receive command",
