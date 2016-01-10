@@ -27,7 +27,7 @@ def devinfo_response_cb(response, protocol):
     print_system_info(response)
 
     response = yield protocol.send_command(command_system_address_get())
-    print("Bluetooth address: {}".format(get_address_string(response.address)))
+    print("Bluetooth address: {}".format(get_address_string_from_bytes(response.address)))
 
     response = yield protocol.send_command(command_system_get_counters())
     print("Device counters:\n"

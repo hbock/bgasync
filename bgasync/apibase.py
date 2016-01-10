@@ -4,9 +4,11 @@ Common functionality for implementing BGAPI.
 NOTE: This file is not auto-generated.
 """
 
-# BGAPI base types, constants, and data.
+import binascii
 from struct import Struct
 from collections import namedtuple
+
+# BGAPI base types, constants, and data
 
 # BGAPI message types.
 BGAPI_MESSAGE_TYPE_COMMAND = 0x00
@@ -125,7 +127,7 @@ def get_error_code_string(errorcode):
     """
     return ERR_CODE_STRING_MAP.get(errorcode, "Unknown error (0x{:04x})".format(errorcode))
 
-def get_address_string(address_raw, delimiter=":"):
+def get_address_string_from_bytes(address_raw, delimiter=":"):
     """
     Convert a Bluetooth address in bytes form into a delimited string representation.
 
@@ -133,7 +135,28 @@ def get_address_string(address_raw, delimiter=":"):
     :param delimiter: Delimiter to use between octets.
     :return: A string representing `address_raw` delimited by `delimiter`.
     """
-    return delimiter.join("{:02x}".format(ord(octet)) for octet in address_raw)
+    return delimiter.join("{:02x}".format(ord(octet)) for octet in address_raw[::-1])
+
+def get_address_bytes_from_string(address_string):
+    """
+    Given a Bluetooth address as a string, optionally delimited by colons (':'), return the
+    bytes representation of the address.
+
+    :param address_string: A Bluetooth address string, optionally delimited by commas.  This value is case-insensitive.
+    :return: A bytes value corresponding to the raw Bluetooth address.
+    :raises: :exc:`ValueError` if `address_string` is not a valid Bluetooth address string.
+    """
+    address_string = address_string.replace(":", "")
+
+    if len(address_string) != 12:
+        raise ValueError("Invalid Bluetooth address: {!r}".format(address_string))
+
+    try:
+        # Address string is reversed from bytes data.
+        return binascii.unhexlify(address_string)[::-1]
+
+    except TypeError:
+        raise ValueError("Invalid Bluetooth address: {!r}".format(address_string))
 
 class Decodable(object):
     decoded_type = namedtuple('undefined', ())

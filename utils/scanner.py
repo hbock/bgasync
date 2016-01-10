@@ -15,7 +15,7 @@ from twisted.python import log
 
 class ScannerProtocol(BluegigaProtocol):
     def handle_event_gap_scan_response(self, event):
-        print("Received advertising event [sender={}]: {}".format(api.get_address_string(event.sender), event))
+        print("Received advertising event [sender={}]: {}".format(api.get_address_string_from_bytes(event.sender), event))
 
 @inlineCallbacks
 def stop_discovery(protocol):
